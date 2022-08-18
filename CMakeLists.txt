@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 3.0.0)
+project(cstg VERSION 0.1.0)
+
+include(CTest)
+enable_testing()
+
+add_library(gameplay)
+target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/libgameplay/gameplay.c)
+target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/libgameplay/gameplay.h)
+target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/libgameplay/message.c)
+target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/libgameplay/message.h)
+target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/libgameplay/hook.c)
+target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/libgameplay/hook.h)
+
+add_executable(cstg)
+target_sources(cstg PUBLIC ${CMAKE_CURRENT_LIST_DIR}/engine/main.c)
+target_include_directories(cstg PUBLIC ${CMAKE_CURRENT_LIST_DIR}/libgameplay)
+target_include_directories(cstg PUBLIC /usr/lib/x86_64-linux-gnu/glib-2.0/include/)
+target_include_directories(cstg PUBLIC /usr/include/glib-2.0)
+target_link_libraries(cstg PUBLIC gameplay)
+target_link_libraries(cstg PUBLIC SDL2)
+target_link_libraries(cstg PUBLIC SDL2_image)
+target_link_libraries(cstg PUBLIC glib-2.0)
+
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+include(CPack)
