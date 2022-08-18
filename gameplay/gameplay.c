@@ -2,6 +2,7 @@
 #include "gameplay.h"
 #include "message.h"
 #include <SDL2/SDL_events.h>
+#include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 
 SDL_Window* window;
