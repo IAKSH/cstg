@@ -1,8 +1,16 @@
 #include "custom_gameobjects.h"
 #include "custom_player.h"
 
-// you need to add all your gameobjects' init func here.
-void custom_ameObjectsInit()
+
+void custom_gameObjectsInit(void)
 {
+    // you need to call all your gameobjects' init func here.
     player_init();
+}
+
+
+// test only
+void custom_gameObjectsOnTick(void)
+{
+    player.onTick();
 }

@@ -17,7 +17,7 @@ int main(void)
     msgsInit();
     hooksInit();
     hooksAdd(engineHook);
-    custom_ameObjectsInit();
+    custom_gameObjectsInit();
 
     while (!gameShouldBeClose)
     {
@@ -33,8 +33,8 @@ int main(void)
 
 static void computing()
 {
-    // Test
-    player_onTick();
+    // test only
+    custom_gameObjectsOnTick();
 }
 
 // processing command and engine's events.

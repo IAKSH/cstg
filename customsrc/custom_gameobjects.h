@@ -4,5 +4,11 @@
 #pragma once
 #include "custom_player.h"
 
+// Custom GameObjects Begin
 extern GameObject player;
-extern void custom_ameObjectsInit();
+// Custom GameObjects End
+
+extern void custom_gameObjectsInit(void);
+
+// test only
+extern void custom_gameObjectsOnTick(void);

@@ -4,6 +4,9 @@
 #include <gameplay.h>
 
 static void playerHook_movement(GamePlayMsg* msg);
+static void player_onCreate(void);
+static void player_onTick(void);
+static void player_onDestroy(void);
 
 GameObject player;
 
@@ -16,25 +19,28 @@ void player_init()
     player.speedX = 0;
     player.speedY = 0;
     player.name = "player";
+    player.onCreate = player_onCreate;
+    player.onTick = player_onTick;
+    player.onDestroy = player_onDestroy;
     SDL_Surface* sur = IMG_Load("/home/zrj/chainList_test/build/a.png");
     player.texture = SDL_CreateTextureFromSurface(globalRenderer, sur);
     SDL_FreeSurface(sur);
     hooksAdd(playerHook_movement);
 }
 
-void player_onCreate()
+static void player_onCreate(void)
 {
 
 }
 
-void player_onTick()
+static void player_onTick(void)
 {
     // processing movement
     player.x += player.speedX;
     player.y += player.speedY;
 }
 
-void player_onDestroy()
+static void player_onDestroy(void)
 {
 
 }
