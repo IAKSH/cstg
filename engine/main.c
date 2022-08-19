@@ -1,5 +1,5 @@
+#include "gomanager.h"
 #include <SDL2/SDL.h>
-#include <bits/pthreadtypes.h>
 #include <stdio.h>
 #include <gameplay.h>
 #include <message.h>
@@ -19,6 +19,11 @@ int main(void)
     hooksAdd(engineHook);
     custom_gameObjectsInit();
 
+    //test
+    // create an gameobject
+    gameObjectsSpawn(&player);
+    player.onCreate();
+
     while (!gameShouldBeClose)
     {
         drawEachGameObject();
@@ -31,10 +36,14 @@ int main(void)
     return 0;
 }
 
+static void _computing(GameObject* go)
+{
+    go->onTick();
+}
+
 static void computing()
 {
-    // test only
-    custom_gameObjectsOnTick();
+    gameObjectsForeach(_computing);
 }
 
 // processing command and engine's events.

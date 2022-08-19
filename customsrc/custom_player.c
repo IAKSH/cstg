@@ -30,7 +30,7 @@ void player_init()
 
 static void player_onCreate(void)
 {
-
+    SDL_Log("player created!");
 }
 
 static void player_onTick(void)

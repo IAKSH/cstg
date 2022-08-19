@@ -21,27 +21,77 @@ void gameObjectsInit(void)
     globalGameObjects.first = NULL;
 }
 
-void gameObjectsSpawnById(int id)
+void gameObjectsSpawn(GameObject* go)
 {
-    
+    if(globalGameObjects.first == NULL)
+    {
+        globalGameObjects.first = (GameObject*)malloc(sizeof(GameObject));
+        globalGameObjects.first->next = NULL;
+        // copy
+        globalGameObjects.first->go = * go;
+    }
+    else
+    {
+        GOLinkListNode_t* node = globalGameObjects.first;
+        while(node->next != NULL) node = node->next;
+        node->next = (GOLinkListNode_t*)malloc(sizeof(GOLinkListNode_t));
+        node = node->next;
+        node->next = NULL;
+        // copy
+        node->go = *go;
+    }
 }
 
-void gameObjectsSpawnByName(const char* name)
-{
-
-}
-
+// didn't test yet , may cause bugs.
 void gameObjectsDestroyById(int id)
 {
-
+    GOLinkListNode_t* node = globalGameObjects.first;
+    GOLinkListNode_t* preNode = NULL;
+    while(node != NULL)
+    {
+        if(node->go.id != id)
+        {
+            preNode = node;
+            node = node->next;
+        }
+        else
+        {
+            preNode = node;
+            node->go.onDestroy();
+            preNode->next = node->next;
+            free(node);
+        }
+    }
 }
 
+// didn't test yet , may cause bugs.
 void gameObjectDestroyByName(const char* name)
 {
-
+    GOLinkListNode_t* node = globalGameObjects.first;
+    GOLinkListNode_t* preNode = NULL;
+    while(node != NULL)
+    {
+        if(strcmp(node->go.name,name))
+        {
+            preNode = node;
+            node = node->next;
+        }
+        else
+        {
+            preNode = node;
+            node->go.onDestroy();
+            preNode->next = node->next;
+            free(node);
+        }
+    }
 }
 
 void gameObjectsForeach( void(*func)(GameObject*))
 {
-
+    GOLinkListNode_t* node = globalGameObjects.first;
+    while(node != NULL)
+    {
+        func(&node->go);
+        node = node->next;
+    }
 }

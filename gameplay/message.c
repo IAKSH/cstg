@@ -55,7 +55,7 @@ void msgsForeach(void(*func)(GamePlayMsg*))
 void msgsClean(void)
 {
     MsgLinkListNode_t* node = globalMsgs.first;
-    MsgLinkListNode_t* preNode = NULL;
+    MsgLinkListNode_t* preNode;
     while(node != NULL)
     {
         preNode = node;

@@ -9,6 +9,3 @@ extern GameObject player;
 // Custom GameObjects End
 
 extern void custom_gameObjectsInit(void);
-
-// test only
-extern void custom_gameObjectsOnTick(void);
