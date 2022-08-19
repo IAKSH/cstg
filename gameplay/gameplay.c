@@ -12,7 +12,6 @@ SDL_Texture* globalTexture;
 //static SDL_Surface* surface;
 SDL_Event globalEvent;
 SDL_Rect windowFillRect = { 0,0,640,480 };
-SDL_Rect gameobjectRect;
 bool gameShouldBeClose = false;
 
 void gameplayInit()
@@ -82,13 +81,23 @@ void gamePlayUpateEvents()
     }
 }
 
+// draw every single texture
+SDL_Rect gameobjectRect;
 void gamePlayDrawGameObjects(int x, int y, int z, int w, int h, SDL_Texture* goTexture)
 {
-    SDL_RenderClear(globalRenderer);
+    //test
     gameobjectRect.x = x;
     gameobjectRect.y = y;
     gameobjectRect.w = w;
     gameobjectRect.h = h;
-    SDL_RenderCopy(globalRenderer, goTexture, NULL, &gameobjectRect);
+    SDL_RenderCopy(globalRenderer, goTexture, &windowFillRect, &gameobjectRect);
+}
+
+// draw all gameobjects in order (form z=max to z=0)
+// this function will do both rendering and sorting
+void gameplayFlash(void)
+{
+    // test
     SDL_RenderPresent(globalRenderer);
+    SDL_RenderClear(globalRenderer);
 }

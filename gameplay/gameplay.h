@@ -16,3 +16,4 @@ extern void gameplayInit();
 extern void gamePlayDestory();
 extern void gamePlayUpateEvents();
 extern void gamePlayDrawGameObjects(int x, int y, int z, int w, int h, SDL_Texture* goTexture);
+extern void gameplayFlash(void);

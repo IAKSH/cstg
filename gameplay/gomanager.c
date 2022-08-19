@@ -4,7 +4,7 @@
 
 typedef struct GOLinkListNode
 {
-    GameObject go;
+    GameObject_t go;
     struct GOLinkListNode* next;
 } GOLinkListNode_t;
 
@@ -21,14 +21,15 @@ void gameObjectsInit(void)
     globalGameObjects.first = NULL;
 }
 
-void gameObjectsSpawn(GameObject* go)
+void gameObjectsSpawn(GameObject_t* go)
 {
     if(globalGameObjects.first == NULL)
     {
-        globalGameObjects.first = (GameObject*)malloc(sizeof(GameObject));
+        globalGameObjects.first = (GameObject_t*)malloc(sizeof(GameObject_t));
         globalGameObjects.first->next = NULL;
         // copy
         globalGameObjects.first->go = * go;
+        go->onCreate(globalGameObjects.first);
     }
     else
     {
@@ -39,6 +40,7 @@ void gameObjectsSpawn(GameObject* go)
         node->next = NULL;
         // copy
         node->go = *go;
+        go->onCreate(globalGameObjects.first);
     }
 }
 
@@ -57,7 +59,7 @@ void gameObjectsDestroyById(int id)
         else
         {
             preNode = node;
-            node->go.onDestroy();
+            node->go.onDestroy(&node->go);
             preNode->next = node->next;
             free(node);
         }
@@ -79,14 +81,14 @@ void gameObjectDestroyByName(const char* name)
         else
         {
             preNode = node;
-            node->go.onDestroy();
+            node->go.onDestroy(&node->go);
             preNode->next = node->next;
             free(node);
         }
     }
 }
 
-void gameObjectsForeach( void(*func)(GameObject*))
+void gameObjectsForeach( void(*func)(GameObject_t*))
 {
     GOLinkListNode_t* node = globalGameObjects.first;
     while(node != NULL)
@@ -94,4 +96,35 @@ void gameObjectsForeach( void(*func)(GameObject*))
         func(&node->go);
         node = node->next;
     }
+}
+
+
+static GameObject_t* goFound = NULL;
+static int requestId = -1;
+static const char* requestName = NULL;
+
+static void _fun1(GameObject_t* go)
+{
+    if(go->id == requestId) goFound = go;
+}
+
+static void _fun2(GameObject_t* go)
+{
+    if(strcmp(go->name,requestName)) goFound = go;
+}
+
+GameObject_t* gameObjectsGetById(int id)
+{
+    requestId = id;
+    gameObjectsForeach(_fun1);
+    requestId = -1;
+    return goFound;
+}
+
+GameObject_t* gameObjectsGetByName(const char* name)
+{
+    requestName = name;
+    gameObjectsForeach(_fun2);
+    requestName = NULL;
+    return goFound;
 }

@@ -22,7 +22,7 @@ int main(void)
     //test
     // create an gameobject
     gameObjectsSpawn(&player);
-    player.onCreate();
+    gameObjectsSpawn(&monster);
 
     while (!gameShouldBeClose)
     {
@@ -36,9 +36,9 @@ int main(void)
     return 0;
 }
 
-static void _computing(GameObject* go)
+static void _computing(GameObject_t* go)
 {
-    go->onTick();
+    go->onTick(go);
 }
 
 static void computing()
@@ -66,8 +66,14 @@ static void engineHook(GamePlayMsg* msg)
     }
 }
 
+static void _func(GameObject_t* go)
+{
+    gamePlayDrawGameObjects(go->x, go->y, go->z, go->w, go->h, go->texture);
+}
+
 static void drawEachGameObject()
 {
-    // Test Only Code
-    gamePlayDrawGameObjects(player.x, player.y, player.z, 100, 100, player.texture);
+    // testing
+    gameObjectsForeach(_func);
+    gameplayFlash();
 }

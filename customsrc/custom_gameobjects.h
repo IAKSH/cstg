@@ -2,10 +2,11 @@
 // you need to add your own gameobjects' declaration here and then they will be loaded.
 
 #pragma once
-#include "custom_player.h"
+#include "custom_go_player.h"
 
 // Custom GameObjects Begin
-extern GameObject player;
+extern GameObject_t player;
+extern GameObject_t monster;
 // Custom GameObjects End
 
 extern void custom_gameObjectsInit(void);
