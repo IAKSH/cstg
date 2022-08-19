@@ -15,7 +15,7 @@ void monster_init()
     monster.id = 1;
     monster.x = 200;
     monster.y = 300;
-    monster.z = 0;
+    monster.z = 1;
     monster.h = 50;
     monster.w = 50;
     monster.speedX = 0;
