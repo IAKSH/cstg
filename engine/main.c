@@ -10,7 +10,6 @@
 static void drawEachGameObject();
 static void engineHook(GamePlayMsg* msg);
 static void playerHookDemo(GamePlayMsg* msg);
-static void doHooks();
 static void computing();
 static void gameObjectsInit();
 
@@ -27,7 +26,7 @@ int main(void)
         drawEachGameObject();
         gamePlayUpateEvents();
         computing();
-        doHooks();
+        hooksRun();
     }
 
     gamePlayDestory();
@@ -38,27 +37,6 @@ static void computing()
 {
     // Test
     player_onTick();
-}
-
-static void doHooks()
-{
-    HookNode_t* node =  getHooks()->first;
-    if(node == NULL) return;
-    else if(node->next == NULL)
-    {
-        msgsForeach(node->func);
-    }
-    else
-    {
-        while(node->next != NULL)
-        {
-            msgsForeach(node->func);
-            node = node->next;
-        }
-        // call the last hook
-         msgsForeach(node->func);
-    }
-    msgsClean();
 }
 
 // processing command and engine's events.

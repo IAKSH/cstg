@@ -5,16 +5,15 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 
-SDL_Window* window;
-SDL_Renderer* renderer;
-SDL_Texture* texture;
+SDL_Window* globalWindow;
+SDL_Renderer* globalRenderer;
+SDL_Texture* globalTexture;
 // surface can't support hardware acceleration
 //static SDL_Surface* surface;
-SDL_Event event;
-SDL_Rect fillRect = { 0,0,640,480 };
+SDL_Event globalEvent;
+SDL_Rect windowFillRect = { 0,0,640,480 };
 SDL_Rect gameobjectRect;
 bool gameShouldBeClose = false;
-bool inputLocked = false;
 
 void gameplayInit()
 {
@@ -24,34 +23,33 @@ void gameplayInit()
         abort();
     }
     IMG_Init(IMG_INIT_PNG);
-    window = SDL_CreateWindow("Game Demo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
+    globalWindow = SDL_CreateWindow("Game Demo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
     // Renderer's Hardware Acceleration enabled , together with VSync
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 640, 480);
+    globalRenderer = SDL_CreateRenderer(globalWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    globalTexture = SDL_CreateTexture(globalRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 640, 480);
 }
 
 void gamePlayDestory()
 {
-    SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyTexture(texture);
+    SDL_DestroyWindow(globalWindow);
+    SDL_DestroyRenderer(globalRenderer);
+    SDL_DestroyTexture(globalTexture);
     IMG_Quit();
     SDL_Quit();
 }
 
 void gamePlayUpateEvents()
 {
-    if(inputLocked) return;
-    if (SDL_PollEvent(&event))
+    if (SDL_PollEvent(&globalEvent))
     {
-        switch (event.type)
+        switch (globalEvent.type)
         {
         case SDL_KEYDOWN:
             {
                 GamePlayMsg msg = 
                 {
                     .type = KEYBOARD_DOWN,
-                    .content.keyboardDown.keycode = event.key.keysym.sym
+                    .content.keyboardDown.keycode = globalEvent.key.keysym.sym
                 };
                 msgsAdd(&msg);
                 break;
@@ -61,7 +59,7 @@ void gamePlayUpateEvents()
                 GamePlayMsg msg = 
                 {
                     .type = KEYBOARD_UP,
-                    .content.keyboardDown.keycode = event.key.keysym.sym
+                    .content.keyboardDown.keycode = globalEvent.key.keysym.sym
                 };
                 msgsAdd(&msg);
                 break;
@@ -92,7 +90,7 @@ void gamePlayDrawGameObjects(int x, int y, int z, int w, int h, SDL_Texture* goT
     //SDL_Rect rect = { x,y,w,h };
     //SDL_RenderDrawRect(renderer, &rect);
     //SDL_RenderPresent(renderer);
-    SDL_RenderClear(renderer);
+    SDL_RenderClear(globalRenderer);
     //SDL_SetRenderTarget(renderer, goTexture);
     //SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     // draw rect
@@ -104,7 +102,7 @@ void gamePlayDrawGameObjects(int x, int y, int z, int w, int h, SDL_Texture* goT
     gameobjectRect.y = y;
     gameobjectRect.w = w;
     gameobjectRect.h = h;
-    SDL_RenderCopy(renderer, goTexture, NULL, &gameobjectRect);
-    SDL_RenderPresent(renderer);
+    SDL_RenderCopy(globalRenderer, goTexture, NULL, &gameobjectRect);
+    SDL_RenderPresent(globalRenderer);
     //SDL_SetRenderTarget(renderer, NULL);
 }

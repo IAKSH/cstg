@@ -88,7 +88,7 @@ typedef struct
     union _Content content;
 } GamePlayMsg;
 
-extern void msgsInit();
+extern void msgsInit(void);
 extern void msgsAdd(GamePlayMsg* msg);
 extern void msgsForeach(void(*func)(GamePlayMsg*));
-extern void msgsClean();
+extern void msgsClean(void);

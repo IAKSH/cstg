@@ -1,24 +1,37 @@
 #include "hook.h"
 
-static HookLinkListHead hooks;
-
-void hooksInit()
+typedef struct HookNode
 {
-    hooks.first = NULL;
+    void* func;
+    struct HookNode* next;
+} HookNode_t;
+
+typedef struct
+{
+    HookNode_t* first;
+} HookLinkListHead;
+
+
+// invisible from outside
+static HookLinkListHead globalHooks;
+
+void hooksInit(void)
+{
+    globalHooks.first = NULL;
 }
 
 void hooksAdd(void(*func)(GamePlayMsg*))
 {
-    if(hooks.first == NULL)
+    if(globalHooks.first == NULL)
     {
-        hooks.first = (HookNode_t*)malloc(sizeof(HookNode_t));
-        hooks.first->next = NULL;
+        globalHooks.first = (HookNode_t*)malloc(sizeof(HookNode_t));
+        globalHooks.first->next = NULL;
         // copy
-        hooks.first->func = func;
+        globalHooks.first->func = func;
     }
     else
     {
-        HookNode_t* node = hooks.first;
+        HookNode_t* node = globalHooks.first;
         while(node->next != NULL) node = node->next;
         node->next = (HookNode_t*)malloc(sizeof(HookNode_t));
         node = node->next;
@@ -27,4 +40,23 @@ void hooksAdd(void(*func)(GamePlayMsg*))
     }
 }
 
-HookLinkListHead* getHooks() {return &hooks;};
+void hooksRun(void)
+{
+    HookNode_t* node =  globalHooks.first;
+    if(node == NULL) return;
+    else if(node->next == NULL)
+    {
+        msgsForeach(node->func);
+    }
+    else
+    {
+        while(node->next != NULL)
+        {
+            msgsForeach(node->func);
+            node = node->next;
+        }
+        // call the last hook
+         msgsForeach(node->func);
+    }
+    msgsClean();
+}

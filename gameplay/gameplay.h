@@ -3,15 +3,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-extern SDL_Window* window;
-extern SDL_Renderer* renderer;
-extern SDL_Texture* texture;
+extern SDL_Window* globalWindow;
+extern SDL_Renderer* globalRenderer;
+extern SDL_Texture* globalTexture;
 // surface can't support hardware acceleration
 //static SDL_Surface* surface;
-extern SDL_Event event;
-extern SDL_Rect fillRect;
+extern SDL_Event globalEvent;
+extern SDL_Rect windowFillRect;
 extern bool gameShouldBeClose;
-extern bool inputLocked;
 
 extern void gameplayInit();
 extern void gamePlayDestory();

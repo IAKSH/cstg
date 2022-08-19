@@ -3,7 +3,7 @@
 #include <hook.h>
 #include <gameplay.h>
 
-static void playerHookDemo(GamePlayMsg* msg);
+static void playerHook_movement(GamePlayMsg* msg);
 
 GameObject player;
 
@@ -17,9 +17,9 @@ void player_init()
     player.speedY = 0;
     player.name = "player";
     SDL_Surface* sur = IMG_Load("/home/zrj/chainList_test/build/a.png");
-    player.texture = SDL_CreateTextureFromSurface(renderer, sur);
+    player.texture = SDL_CreateTextureFromSurface(globalRenderer, sur);
     SDL_FreeSurface(sur);
-    hooksAdd(playerHookDemo);
+    hooksAdd(playerHook_movement);
 }
 
 void player_onCreate()
@@ -39,7 +39,7 @@ void player_onDestroy()
 
 }
 
-static void playerHookDemo(GamePlayMsg* msg)
+static void playerHook_movement(GamePlayMsg* msg)
 {
     if(msg->type == KEYBOARD_DOWN)
     {

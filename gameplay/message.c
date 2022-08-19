@@ -13,36 +13,38 @@ typedef struct
     MsgLinkListNode_t* first;
 } MsgLinkListHead;
 
-static MsgLinkListHead msgs;
+// invisibel from outside
+static MsgLinkListHead globalMsgs;
 
-void msgsInit()
+void msgsInit(void)
 {
-    msgs.first = NULL;
+    globalMsgs.first = NULL;
 }
 
 void msgsAdd(GamePlayMsg* msg)
 {
-    if(msgs.first == NULL)
+    if(globalMsgs.first == NULL)
     {
-        msgs.first = (MsgLinkListNode_t*)malloc(sizeof(MsgLinkListNode_t));
-        msgs.first->next = NULL;
+        globalMsgs.first = (MsgLinkListNode_t*)malloc(sizeof(MsgLinkListNode_t));
+        globalMsgs.first->next = NULL;
         // copy
-        msgs.first->msg = *msg;
+        globalMsgs.first->msg = *msg;
     }
     else
     {
-        MsgLinkListNode_t* node = msgs.first;
+        MsgLinkListNode_t* node = globalMsgs.first;
         while(node->next != NULL) node = node->next;
         node->next = (MsgLinkListNode_t*)malloc(sizeof(MsgLinkListNode_t));
         node = node->next;
         node->next = NULL;
+        // copy
         node->msg = *msg;
     }
 }
 
 void msgsForeach(void(*func)(GamePlayMsg*))
 {
-    MsgLinkListNode_t* node = msgs.first;
+    MsgLinkListNode_t* node = globalMsgs.first;
     while(node != NULL)
     {
         func(&node->msg);
@@ -50,9 +52,9 @@ void msgsForeach(void(*func)(GamePlayMsg*))
     }
 }
 
-void msgsClean()
+void msgsClean(void)
 {
-    MsgLinkListNode_t* node = msgs.first;
+    MsgLinkListNode_t* node = globalMsgs.first;
     MsgLinkListNode_t* preNode = NULL;
     while(node != NULL)
     {
@@ -60,5 +62,5 @@ void msgsClean()
         node = node->next;
         free(preNode);
     }
-    msgs.first = NULL;
+    globalMsgs.first = NULL;
 }
