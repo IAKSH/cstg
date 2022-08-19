@@ -19,6 +19,8 @@ target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/gomanager.h)
 add_library(customsrc)
 target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_player.c)
 target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_player.h)
+target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobjects.c)
+target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobjects.h)
 target_include_directories(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay)
 
 add_executable(cstg)

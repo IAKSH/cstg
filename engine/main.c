@@ -5,13 +5,11 @@
 #include <message.h>
 #include <hook.h>
 #include <gameobject.h>
-#include <custom_player.h>
+#include <custom_gameobjects.h>
 
 static void drawEachGameObject();
 static void engineHook(GamePlayMsg* msg);
-static void playerHookDemo(GamePlayMsg* msg);
 static void computing();
-static void gameObjectsInit();
 
 int main(void)
 {
@@ -19,7 +17,7 @@ int main(void)
     msgsInit();
     hooksInit();
     hooksAdd(engineHook);
-    gameObjectsInit();
+    custom_ameObjectsInit();
 
     while (!gameShouldBeClose)
     {
@@ -63,10 +61,4 @@ static void drawEachGameObject()
 {
     // Test Only Code
     gamePlayDrawGameObjects(player.x, player.y, player.z, 100, 100, player.texture);
-}
-
-static void gameObjectsInit()
-{
-    // all GameObject Models should initialize here.
-    player_init();
 }
