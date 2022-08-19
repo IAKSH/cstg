@@ -25,11 +25,11 @@ void gameObjectsSpawn(GameObject_t* go)
 {
     if(globalGameObjects.first == NULL)
     {
-        globalGameObjects.first = (GameObject_t*)malloc(sizeof(GameObject_t));
+        globalGameObjects.first = (GOLinkListNode_t*)malloc(sizeof(GOLinkListNode_t));
         globalGameObjects.first->next = NULL;
         // copy
         globalGameObjects.first->go = * go;
-        go->onCreate(globalGameObjects.first);
+        go->onCreate(&globalGameObjects.first->go);
     }
     else
     {
@@ -40,7 +40,7 @@ void gameObjectsSpawn(GameObject_t* go)
         node->next = NULL;
         // copy
         node->go = *go;
-        go->onCreate(globalGameObjects.first);
+        go->onCreate(&globalGameObjects.first->go);
     }
 }
 
