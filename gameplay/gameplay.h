@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "drawsort.h"
+#include "gameobject.h"
 
 extern SDL_Window* globalWindow;
 extern SDL_Renderer* globalRenderer;
@@ -15,5 +17,5 @@ extern bool gameShouldBeClose;
 extern void gameplayInit();
 extern void gamePlayDestory();
 extern void gamePlayUpateEvents();
-extern void gamePlayDrawGameObjects(int x, int y, int z, int w, int h, SDL_Texture* goTexture);
+extern void gamePlayDrawGameObjects(GameObject_t*);
 extern void gameplayFlash(void);

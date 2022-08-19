@@ -1,3 +1,4 @@
+#include "drawsort.h"
 #include "gomanager.h"
 #include <SDL2/SDL.h>
 #include <stdio.h>
@@ -18,6 +19,7 @@ int main(void)
     hooksInit();
     hooksAdd(engineHook);
     custom_gameObjectsInit();
+    drawsInit();
 
     //test
     // create an gameobject
@@ -68,7 +70,7 @@ static void engineHook(GamePlayMsg* msg)
 
 static void _func(GameObject_t* go)
 {
-    gamePlayDrawGameObjects(go->x, go->y, go->z, go->w, go->h, go->texture);
+    gamePlayDrawGameObjects(go);
 }
 
 static void drawEachGameObject()

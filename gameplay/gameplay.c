@@ -1,5 +1,6 @@
 
 #include "gameplay.h"
+#include "drawsort.h"
 #include "message.h"
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
@@ -83,21 +84,28 @@ void gamePlayUpateEvents()
 
 // draw every single texture
 SDL_Rect gameobjectRect;
-void gamePlayDrawGameObjects(int x, int y, int z, int w, int h, SDL_Texture* goTexture)
+
+static void _func(DrawLinkListNode_t* node)
 {
-    //test
-    gameobjectRect.x = x;
-    gameobjectRect.y = y;
-    gameobjectRect.w = w;
-    gameobjectRect.h = h;
-    SDL_RenderCopy(globalRenderer, goTexture, &windowFillRect, &gameobjectRect);
+    gameobjectRect.x = node->go->x;
+    gameobjectRect.y = node->go->y;
+    gameobjectRect.w = node->go->w;
+    gameobjectRect.h = node->go->h;
+    SDL_RenderCopy(globalRenderer, node->go->texture, &windowFillRect, &gameobjectRect);
+}
+
+void gamePlayDrawGameObjects(GameObject_t* go)
+{
+    drawsAdd(go);
 }
 
 // draw all gameobjects in order (form z=max to z=0)
 // this function will do both rendering and sorting
 void gameplayFlash(void)
 {
-    // test
+    drawsSort();
+    drawsForeach(_func);
     SDL_RenderPresent(globalRenderer);
     SDL_RenderClear(globalRenderer);
+    drawsClean();
 }
