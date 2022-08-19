@@ -84,25 +84,11 @@ void gamePlayUpateEvents()
 
 void gamePlayDrawGameObjects(int x, int y, int z, int w, int h, SDL_Texture* goTexture)
 {
-    // TEST
-    //SDL_RenderClear(renderer);
-    //SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    //SDL_Rect rect = { x,y,w,h };
-    //SDL_RenderDrawRect(renderer, &rect);
-    //SDL_RenderPresent(renderer);
     SDL_RenderClear(globalRenderer);
-    //SDL_SetRenderTarget(renderer, goTexture);
-    //SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    // draw rect
-    //SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-    //SDL_SetTextureBlendMode(goTexture, SDL_BLENDMODE_BLEND);
-    //SDL_RenderFillRect(renderer, &r);
-    //SDL_RenderDrawRect(renderer, &r);
     gameobjectRect.x = x;
     gameobjectRect.y = y;
     gameobjectRect.w = w;
     gameobjectRect.h = h;
     SDL_RenderCopy(globalRenderer, goTexture, NULL, &gameobjectRect);
     SDL_RenderPresent(globalRenderer);
-    //SDL_SetRenderTarget(renderer, NULL);
 }
