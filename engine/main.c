@@ -1,5 +1,5 @@
-#include "drawsort.h"
-#include "gomanager.h"
+#include <drawsort.h>
+#include <gomanager.h>
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <gameplay.h>
@@ -12,7 +12,7 @@ static void drawEachGameObject();
 static void engineHook(GamePlayMsg* msg);
 static void computing();
 
-int main(void)
+int main(int argc,char** argv)
 {
     gameplayInit();
     msgsInit();
