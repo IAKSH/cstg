@@ -26,13 +26,20 @@ target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_mo
 target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobjects.c)
 target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobjects.h)
 target_include_directories(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay)
+target_include_directories(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools)
+
+add_library(utools)
+target_sources(utools PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools/utools.c)
+target_sources(utools PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools/utools.h)
 
 add_executable(cstg)
 target_sources(cstg PUBLIC ${CMAKE_CURRENT_LIST_DIR}/engine/main.c)
 target_include_directories(cstg PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay)
 target_include_directories(cstg PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc)
+target_include_directories(cstg PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools)
 target_link_libraries(cstg PUBLIC gameplay)
 target_link_libraries(cstg PUBLIC customsrc)
+target_link_libraries(cstg PUBLIC utools)
 target_link_libraries(cstg PUBLIC SDL2)
 target_link_libraries(cstg PUBLIC SDL2_image)
 

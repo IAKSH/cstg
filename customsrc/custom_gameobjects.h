@@ -10,3 +10,4 @@ extern GameObject_t monster;
 // Custom GameObjects End
 
 extern void custom_gameObjectsInit(void);
+extern SDL_Surface* custom_loadImage(const char* fileName);

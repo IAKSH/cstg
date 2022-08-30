@@ -7,6 +7,7 @@
 #include <hook.h>
 #include <gameobject.h>
 #include <custom_gameobjects.h>
+#include <utools.h>
 
 static void drawEachGameObject();
 static void engineHook(GamePlayMsg* msg);
@@ -14,6 +15,7 @@ static void computing();
 
 int main(int argc,char** argv)
 {
+    initUtools(argc,argv);
     gameplayInit();
     msgsInit();
     hooksInit();
