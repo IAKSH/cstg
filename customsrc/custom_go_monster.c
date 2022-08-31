@@ -1,8 +1,8 @@
 #include "custom_go_monster.h"
+#include "custom_gameobjects.h"
 #include "gameobject.h"
 #include "gameplay.h"
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_surface.h>
+#include <string.h>
 
 static void onCreate(GameObject_t* go);
 static void onTick(GameObject_t* go);
@@ -24,7 +24,7 @@ void monster_init()
     monster.onCreate = onCreate;
     monster.onTick = onTick;
     monster.onDestroy = onDestroy;
-    SDL_Surface* sur = IMG_Load("/home/zrj/chainList_test/build/a.png");
+    SDL_Surface* sur = custom_loadImage("a.png");
     monster.texture = SDL_CreateTextureFromSurface(globalRenderer, sur);
     SDL_FreeSurface(sur);
 }
