@@ -109,3 +109,8 @@ void gameplayFlash(void)
     SDL_RenderClear(globalRenderer);
     drawsClean();
 }
+
+void gamePlayDrawFx(SDL_Surface* surface)
+{
+    
+}

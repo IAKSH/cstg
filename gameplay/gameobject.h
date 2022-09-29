@@ -4,10 +4,13 @@
 typedef struct GameObject
 {
     int id;
+    int typeId;
     int x,y,z;
     int w,h;
     int speedX;
     int speedY;
+    int hp,mp;
+    int state;//0:dead 1:alive ~:custom...
     char* name;
     void(*onCreate)(struct GameObject* thisGO);
     void(*onDestroy)(struct GameObject* thisGO);

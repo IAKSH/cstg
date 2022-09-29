@@ -15,6 +15,7 @@ typedef struct
 
 // invisible from outside
 static GOLinkListHead globalGameObjects;
+int idHead = 0;
 
 void gameObjectsInit(void)
 {
@@ -113,6 +114,11 @@ static void _fun2(GameObject_t* go)
     if(strcmp(go->name,requestName)) goFound = go;
 }
 
+static void _fun3(GameObject_t* go)
+{
+    if(go->typeId == requestId) goFound = go;
+}
+
 GameObject_t* gameObjectsGetById(int id)
 {
     requestId = id;
@@ -121,10 +127,23 @@ GameObject_t* gameObjectsGetById(int id)
     return goFound;
 }
 
-GameObject_t* gameObjectsGetByName(const char* name)
+GameObject_t* gameObjectsGetByTypeId(int id)
+{
+    requestId = id;
+    gameObjectsForeach(_fun3);
+    requestId = -1;
+    return goFound;
+}
+
+GameObject_t* gameObjectsGetByName(char* name)
 {
     requestName = name;
     gameObjectsForeach(_fun2);
     requestName = NULL;
     return goFound;
+}
+
+int allocateGameObjectId()
+{
+    return ++idHead;
 }

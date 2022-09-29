@@ -5,9 +5,11 @@
 //extern void gameObjectModelsAdd(GameObject* go);
 
 extern void gameObjectsInit(void);
-extern void gameObjectsSpawn(GameObject_t* go);
-extern void gameObjectsDestroyById(int id);
-extern void gameObjectDestroyByName(const char* name);
-extern void gameObjectsForeach( void(*func)(GameObject_t*));
-extern GameObject_t* gameObjectsGetById(int id);
-extern GameObject_t* gameObjectsGetByName(const char* name);
+extern void gameObjectsSpawn(GameObject_t*);
+extern void gameObjectsDestroyById(int);
+extern void gameObjectDestroyByName(const char*);
+extern void gameObjectsForeach( void(*)(GameObject_t*));
+extern GameObject_t* gameObjectsGetById(int);
+extern GameObject_t* gameObjectsGetByTypeId(int);
+extern GameObject_t* gameObjectsGetByName(char*);
+extern int allocateGameObjectId();

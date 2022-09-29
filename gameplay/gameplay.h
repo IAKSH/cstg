@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL2/SDL_surface.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -18,4 +19,5 @@ extern void gameplayInit();
 extern void gamePlayDestory();
 extern void gamePlayUpateEvents();
 extern void gamePlayDrawGameObjects(GameObject_t*);
+extern void gamePlayDrawFx(SDL_Surface*);
 extern void gameplayFlash(void);
