@@ -2,21 +2,21 @@
 
 #include "custom_gameobjects.h"
 #include <SDL2/SDL_image.h>
-#include <utools.h>
 #include <audiomanager.h>
+#include <utools.h>
 
 SDL_Surface* custom_loadImage(char* fileName)
 {
     char buffer[128];
-    strcpy(buffer,rootPath);
-    strcat(buffer,"/");
-    strcat(buffer,fileName);
+    strcpy(buffer, rootPath);
+    strcat(buffer, "/");
+    strcat(buffer, fileName);
     return IMG_Load(buffer);
 }
 
 // include your gameobjects' head file here
-#include "custom_go_player.h"
 #include "custom_go_monster.h"
+#include "custom_go_player.h"
 
 void custom_gameObjectsInit(void)
 {
@@ -25,11 +25,11 @@ void custom_gameObjectsInit(void)
     monster_init();
 }
 
-void custom_loadAudio(char* name,char* path)
+void custom_loadAudio(char* name, char* path)
 {
     char buffer[128];
-    strcpy(buffer,rootPath);
-    strcat(buffer,"/");
-    strcat(buffer,path);
-    loadAudio("sound_01",buffer);
+    strcpy(buffer, rootPath);
+    strcat(buffer, "/");
+    strcat(buffer, path);
+    loadAudio("sound_01", buffer);
 }

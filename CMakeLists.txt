@@ -5,50 +5,56 @@ include(CTest)
 enable_testing()
 
 add_library(gameplay)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/gameplay.c)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/gameplay.h)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/message.c)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/message.h)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/hook.c)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/hook.h)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/gameobject.c)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/gameobject.h)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/gomanager.c)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/gomanager.h)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/drawsort.c)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/drawsort.h)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/audiomanager.c)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/audiomanager.h)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/textdisplay.c)
-target_sources(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay/textdisplay.h)
+target_sources(gameplay PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/gameplay.c
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/gameplay.h
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/message.c
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/message.h
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/hook.c
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/hook.h
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/gameobject.c
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/gameobject.h
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/gomanager.c
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/gomanager.h
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/drawsort.c
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/drawsort.h
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/audiomanager.c
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/audiomanager.h
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/textdisplay.c
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/textdisplay.h
+    ) 
+
 target_include_directories(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools)
 
 add_library(customsrc)
-target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_player.c)
-target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_player.h)
-target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_monster.c)
-target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_monster.h)
-target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobjects.c)
-target_sources(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobjects.h)
-target_include_directories(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay)
-target_include_directories(customsrc PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools)
+target_sources(customsrc PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_player.c
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_player.h
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_monster.c
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_monster.h
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobjects.c
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobjects.h
+    )
+
+target_include_directories(customsrc PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay
+    ${CMAKE_CURRENT_LIST_DIR}/utools
+    )
 
 add_library(utools)
-target_sources(utools PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools/utools.c)
-target_sources(utools PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools/utools.h)
+target_sources(utools PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}/utools/utools.c
+    ${CMAKE_CURRENT_LIST_DIR}/utools/utools.h
+    )
 
-add_executable(cstg)
-target_sources(cstg PUBLIC ${CMAKE_CURRENT_LIST_DIR}/engine/main.c)
-target_include_directories(cstg PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gameplay)
-target_include_directories(cstg PUBLIC ${CMAKE_CURRENT_LIST_DIR}/customsrc)
-target_include_directories(cstg PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools)
-target_link_libraries(cstg PUBLIC gameplay)
-target_link_libraries(cstg PUBLIC customsrc)
-target_link_libraries(cstg PUBLIC utools)
-target_link_libraries(cstg PUBLIC SDL2)
-target_link_libraries(cstg PUBLIC SDL2_image)
-target_link_libraries(cstg PUBLIC SDL2_mixer)
-target_link_libraries(cstg PUBLIC SDL2_ttf)
+add_executable(cstg ${CMAKE_CURRENT_LIST_DIR}/engine/main.c)
+target_include_directories(cstg PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc
+    ${CMAKE_CURRENT_LIST_DIR}/utools
+    )
+
+target_link_libraries(cstg PUBLIC gameplay customsrc utools SDL2 SDL2_image SDL2_mixer SDL2_ttf)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

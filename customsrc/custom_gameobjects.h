@@ -11,6 +11,6 @@ extern GameObject_t player;
 extern GameObject_t monster;
 // Custom GameObjects End
 
-extern void custom_gameObjectsInit(void);
-extern void custom_loadAudio(char*,char*);
+extern void         custom_gameObjectsInit(void);
+extern void         custom_loadAudio(char*, char*);
 extern SDL_Surface* custom_loadImage(char* fileName);
