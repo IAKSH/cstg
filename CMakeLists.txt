@@ -27,6 +27,7 @@ target_sources(gameplay PUBLIC
 target_include_directories(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools)
 
 add_library(customsrc)
+
 target_sources(customsrc PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_player.c
     ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_player.h

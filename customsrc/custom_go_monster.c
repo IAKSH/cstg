@@ -3,6 +3,7 @@
 #include "gameobject.h"
 #include "gameplay.h"
 #include "gomanager.h"
+
 #include <string.h>
 
 static void onCreate(GameObject_t* go);
