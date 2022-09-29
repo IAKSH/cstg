@@ -3,7 +3,7 @@
 
 typedef struct GameObject
 {
-    int id;
+    int id;//if id < 0 then: this is a FX object
     int typeId;
     int x,y,z;
     int w,h;

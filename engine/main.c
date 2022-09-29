@@ -9,6 +9,7 @@
 #include <custom_gameobjects.h>
 #include <utools.h>
 #include <audiomanager.h>
+#include <textdisplay.h>
 
 static void drawEachGameObject();
 static void engineHook(GamePlayMsg* msg);
@@ -18,6 +19,7 @@ int main(int argc,char** argv)
 {
     initUtools(argc,argv);
     gameplayInit();
+    InitTextDisplay();
     audioInit();
     msgsInit();
     hooksInit();
@@ -39,6 +41,7 @@ int main(int argc,char** argv)
     }
 
     audioRelease();
+    closeTextDisplay();
     gamePlayDestory();
     return 0;
 }
