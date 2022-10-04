@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"iaksh.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="序  其实，我有软件洁癖。但是学校好像要求要用Dev-C++，所以我在虚拟机里进行了配置，并写下了这篇博文。  （后日谈：后来我发现Dev-C++还是有几分优雅的，于是迅速在物理机上整了个）  我对Dev-C++这样老掉牙且有先天缺陷的IDE一向是嗤之以鼻的，但看了一些文章以后，这样的看法似乎有一些改观了。  Dev-C++也许不是一个趁手的工具，但它不失为一个合适的教具。 什么是Dev-C++简">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dev-C++的安装和使用">
+<meta property="og:url" content="https://iaksh.github.io/2022/08/12/Dev-C-%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Hello world!">
+<meta property="og:description" content="序  其实，我有软件洁癖。但是学校好像要求要用Dev-C++，所以我在虚拟机里进行了配置，并写下了这篇博文。  （后日谈：后来我发现Dev-C++还是有几分优雅的，于是迅速在物理机上整了个）  我对Dev-C++这样老掉牙且有先天缺陷的IDE一向是嗤之以鼻的，但看了一些文章以后，这样的看法似乎有一些改观了。  Dev-C++也许不是一个趁手的工具，但它不失为一个合适的教具。 什么是Dev-C++简">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2022/08/12/vYYOKO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/08/12/vYt3sU.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/08/12/vYtUiR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/08/12/vYtTeg.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/08/12/vYN0ts.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/08/12/vYdpm8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/08/12/vYBnnP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/08/12/vYDG5D.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/08/12/vYDxZ6.png">
+<meta property="article:published_time" content="2022-08-12T07:45:16.000Z">
+<meta property="article:modified_time" content="2022-09-16T15:37:32.865Z">
+<meta property="article:author" content="IAKSH">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2022/08/12/vYYOKO.png">
+
+<link rel="canonical" href="https://iaksh.github.io/2022/08/12/Dev-C-%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Dev-C++的安装和使用 | Hello world!</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hello world!</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://iaksh.github.io/2022/08/12/Dev-C-%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="IAKSH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello world!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Dev-C++的安装和使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-12 15:45:16" itemprop="dateCreated datePublished" datetime="2022-08-12T15:45:16+08:00">2022-08-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-09-16 23:37:32" itemprop="dateModified" datetime="2022-09-16T23:37:32+08:00">2022-09-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p>  其实，我有软件洁癖。但是学校好像要求要用Dev-C++，所以我在虚拟机里进行了配置，并写下了这篇博文。<br>  <del>（后日谈：后来我发现Dev-C++还是有几分优雅的，于是迅速在物理机上整了个）</del><br>  我对Dev-C++这样老掉牙且有先天缺陷的IDE一向是嗤之以鼻的，但看了一些文章以后，这样的看法似乎有一些改观了。<br>  Dev-C++也许不是一个趁手的工具，但它不失为一个合适的教具。</p>
+<h1 id="什么是Dev-C"><a href="#什么是Dev-C" class="headerlink" title="什么是Dev-C++"></a>什么是Dev-C++</h1><h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>  Dev-C++是以Delphi编写（存疑）的，运行在Windows上的，以MinGW-W64（或TDM-GCC）为后端的<strong>基于GPL协议开源</strong>的C&#x2F;C++集成开发环境（IDE）<br>  Dev-C++功能简陋…不，应该是某种意义上的简洁，对新人不太友好但却实际上适合新手入门以及充当C&#x2F;C++的教学工具。</p>
+<h2 id="Dev-C-的各个分支"><a href="#Dev-C-的各个分支" class="headerlink" title="Dev-C++的各个分支"></a>Dev-C++的各个分支</h2><p>  Dev-C++，作为一个开源项目，它也有着在大多数开源项目上常见的悲惨，却又幸运的命运。<br>  2000年左右，Bloodshed Software团队以构建一个轻量，免费，开源的C&#x2F;C++ IDE为宗旨，创建了Dev-C++项目。不过由于整个团队几乎是在用爱发电，到2005年时，Bloodshed以“失去开发动力”为由，宣布无限期暂停Dev-C++的更新，Dev-C++的版本号停滞在了4.9.9。<br>  但是当时的Dev-C++实在是太讨人喜欢了，在原团队停止开发后，无数的社区开发者们自发地扛起了Dev-C++的更新工作，其中最有名的当属Orwell团队。<br>  Orwell团队在2011年成功将Dev-C++的版本号推至5.x，在2016年发布了他们的最后一个版本——5.11。<br>  从2016年到2020年，只有一些个人维护的Dev-C++分支仍在更新，Dev-C++社区总体上停滞不前。<br>  但2020年7月，Embarcadero公司投入资金并以Orwell Dev-C++ 5.11为蓝本继续开发，这也就是我们即将接触的Embarcadero Dev-C++的来源。</p>
+<h2 id="我为什么认为Dev-C-是一个好的C语言教具"><a href="#我为什么认为Dev-C-是一个好的C语言教具" class="headerlink" title="我为什么认为Dev-C++是一个好的C语言教具"></a>我为什么认为Dev-C++是一个好的C语言教具</h2><p>  众所周知，完事开头难，如果你让一个从未学习过编程的人一来就使用Visual Studio这样的工具，它多半还没有开始敲字就被一堆又一堆的按钮给吓住了。<br>  使用Dev-C++这样老旧的IDE有一个好处，就是它并不会像Visua Studio那样将编译链接的过程隐藏起来，也没有IntelliCode来掩盖你记不住关键字和函数的事实。Dev-C++将编译链接的理论模型简单套上一层自动化脚本，然后直接摆在使用者的面前，给人一种好像就是在用终端指令操纵gcc去编译程序的感觉，熟悉Dev-C++的操作流程以后，能较为方便地切换到Makefile以及CMake这样更加专业的构建工具上，我想这也是老一辈程序员们热爱它的原因，某种意义上它难以理解，某种意义上它也简单干净，它不为资本所追求的快速迭代而服务，它忠于技术本身，它属于程序员。</p>
+<h1 id="Dev-C-的下载与安装"><a href="#Dev-C-的下载与安装" class="headerlink" title="Dev-C++的下载与安装"></a>Dev-C++的下载与安装</h1><h2 id="下载Dev-C-安装包"><a href="#下载Dev-C-安装包" class="headerlink" title="下载Dev-C++安装包"></a>下载Dev-C++安装包</h2><p>  作为名副其实的老开源项目，Orwell Dev-C++的仓库托管在<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/orwelldevcpp/">Sourceforge</a>，而重生于2020年的Embarcadero Dev-C++则开源于<a target="_blank" rel="noopener" href="https://github.com/Embarcadero/Dev-Cpp">Github</a><br>  你可以在上述Github仓库页面找到Embarcadero Dev-C++的最新Release。截至本文完稿时的最新版本为6.3，附带的编译器为TDM-GCC，这也是下面我用到的版本。</p>
+<h2 id="安装Dev-C"><a href="#安装Dev-C" class="headerlink" title="安装Dev-C++"></a>安装Dev-C++</h2><p>  <del>你不会拿到安装包了还不会装吧？</del><br>  <del>不会吧不会吧？</del><br>  Embarcadero Dev-C++的Github Release里应该同时包含了exe安装包和可绿色安装的压缩包，我的建议是使用后者，解压即用，双击devcpp.exe起飞。<br>  第一次启动Dev-C++时会要你选择语言和一些主题设置，我的建议是使用Visual Studio Dark配色以及Windows10图标，不包你喜欢但是保证不辣眼睛。</p>
+<h1 id="Dev-C-的基本操作"><a href="#Dev-C-的基本操作" class="headerlink" title="Dev-C++的基本操作"></a>Dev-C++的基本操作</h1><h2 id="新建和打开一个工程"><a href="#新建和打开一个工程" class="headerlink" title="新建和打开一个工程"></a>新建和打开一个工程</h2><p>  和大多数IDE一样，在开始编码之前你得先创建一个项目，进入软件后点击左上角文件-&gt;新建-&gt;项目，然后选择你要创建的项目类型。<br>  这里我以控制台程序（Console Application）为例。<br>  <a target="_blank" rel="noopener" href="https://imgtu.com/i/vYYOKO"><img src="https://s1.ax1x.com/2022/08/12/vYYOKO.png" alt="vYYOKO.png"></a><br>  点击确认后会需要你选择一个位置作为该项目的根目录，随后会在你选择的路径下创建一个项目文件，如下图。<br>  <a target="_blank" rel="noopener" href="https://imgtu.com/i/vYt3sU"><img src="https://s1.ax1x.com/2022/08/12/vYt3sU.png" alt="vYt3sU.png"></a><br>  这实际上是一个文本文件，它记录了该项目的各种配置以及源文件路径，你可以使用任意文本编辑器来查看它的内容，比如我的：<br>  <a target="_blank" rel="noopener" href="https://imgtu.com/i/vYtUiR"><img src="https://s1.ax1x.com/2022/08/12/vYtUiR.png" alt="vYtUiR.png"></a><br>  当你关闭Dev-C++后，只需要用Dev-C++打开该.dev文件即可再次打开该工程。<br>  最简单的操作流程就是把.dev文件拖到devcpp.exe上，就像这样…<br>  <a target="_blank" rel="noopener" href="https://imgtu.com/i/vYtTeg"><img src="https://s1.ax1x.com/2022/08/12/vYtTeg.png" alt="vYtTeg.png"></a></p>
+<h2 id="向工程中添加源文件和头文件"><a href="#向工程中添加源文件和头文件" class="headerlink" title="向工程中添加源文件和头文件"></a>向工程中添加源文件和头文件</h2><p>  你可以直接右键某个项目然后新建一个文本文件在里面<br>  <a target="_blank" rel="noopener" href="https://imgtu.com/i/vYN0ts"><img src="https://s1.ax1x.com/2022/08/12/vYN0ts.png" alt="vYN0ts.png"></a><br>  新建文件的路径，名称还有后缀都由你自己决定，Dev-C++和后面的编译器都只靠文件后缀来判断是源文件还是头文件或者是其他的什么玩意儿。但关于路径我想说的是，Dev-C++甚至允许你把添加的文件丢在任何一个目录，但我建议不要把他们丢在项目的根目录外面。</p>
+<p>  你还可以右键工程以后直接点击“New File”，和上面的差不多，但是你得先按Ctrl+S保存才能选择保存路径。<br>  你也许也注意到了，工程的右键菜单里有创建文件夹，我想说的是这个“文件夹”并不是实际文件结构中的文件夹，只是在Dev-C++中对源文件和头文件进行分组归类。</p>
+<h1 id="编译你的工程"><a href="#编译你的工程" class="headerlink" title="编译你的工程"></a>编译你的工程</h1><p>  在项目下放列出的所有文件都会被加入到Dev-C++的构建系统中，此时点击运行选项卡中的编译选项即可。<br>  <a target="_blank" rel="noopener" href="https://imgtu.com/i/vYdpm8"><img src="https://s1.ax1x.com/2022/08/12/vYdpm8.png" alt="vYdpm8.png"></a></p>
+<h1 id="运行你的工程"><a href="#运行你的工程" class="headerlink" title="运行你的工程"></a>运行你的工程</h1><p>  再去看看上面所说的那个选项卡，你会发现里面有“运行”和“编译运行”这两个选项。<br>  和Visual Studio不一样，Dev-C++的“运行”就真的只是运行，不包含编译。<br>  也就是说，在运行之前，你得先把你的程序编译出来。（这一点同样适用于很多老旧的IDE，比如隔壁Code::Blocks）<br>  至于“编译运行”这个选项，其实就是字面意思，把两步合并在了一起，也就是一键开跑了，倒也还算方便。</p>
+<h1 id="在Dev-C-中Debug"><a href="#在Dev-C-中Debug" class="headerlink" title="在Dev-C++中Debug"></a>在Dev-C++中Debug</h1><p>  Dev-C++的Debug功能实际上是调用gdb实现的，使用流程也无非就是常见的打断点-&gt;Debug运行，然后步进啥的，看一眼你们大概就都会了。<br>  对了，Dev-C++的断点是不会独立成一行的，而是和行号重叠，在编辑器里点一下行号就能打断点了。<br>  另外，开始Debug的按钮是“运行”选项卡里的“调试”，如下图所示。<br>  <a target="_blank" rel="noopener" href="https://imgtu.com/i/vYBnnP"><img src="https://s1.ax1x.com/2022/08/12/vYBnnP.png" alt="vYBnnP.png"></a></p>
+<h1 id="使用快捷键替代鼠标操纵"><a href="#使用快捷键替代鼠标操纵" class="headerlink" title="使用快捷键替代鼠标操纵"></a>使用快捷键替代鼠标操纵</h1><p>  说句大实话，这是提升你的生产效率的必要途径。在各个选项卡中你可以在找到各个功能对应的快捷键（写在右侧，比如调试的快捷键是F5），熟练后尽量使用那些快捷键，而不是慢吞吞地摸出鼠标然后到处点点点。</p>
+<h1 id="Dev-C-其他的一些功能"><a href="#Dev-C-其他的一些功能" class="headerlink" title="Dev-C++其他的一些功能"></a>Dev-C++其他的一些功能</h1><h2 id="代码格式化工具"><a href="#代码格式化工具" class="headerlink" title="代码格式化工具"></a>代码格式化工具</h2><p>  Dev-C++集成了AStyle，可以快速按照某种代码风格来格式化你的代码。<br>  <a target="_blank" rel="noopener" href="https://imgtu.com/i/vYDG5D"><img src="https://s1.ax1x.com/2022/08/12/vYDG5D.png" alt="vYDG5D.png"></a><br>  具体的格式化策略你可以点击“格式化选项”来修改。<br>  顺便一提：<br>  <a target="_blank" rel="noopener" href="https://imgtu.com/i/vYDxZ6"><img src="https://s1.ax1x.com/2022/08/12/vYDxZ6.png" alt="vYDxZ6.png"></a><br>  好吧，只是抖个机灵。<br>  实际上我也并没有完全遵守Allman风格。</p>
+<h2 id="添加编译选项"><a href="#添加编译选项" class="headerlink" title="添加编译选项"></a>添加编译选项</h2><p>  在“工具”选项卡里你可以找到“编译选项”，值得一提的是这里将编译指令和链接指令分开了。<br>  至于这里应该写些什么，你可能得先去了解一下gcc和ld，以后我可能会写一文介绍它们。</p>
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>  至此，你应该以及能够使用Dev-C++进行基本的开发和调试了，剩下的就是学习C&#x2F;C++这两门语言本身，以及它们的生态了。<br>  作为（半个）过来人，相信我，在C++面前，起初你可能心情激动，满脑子“就这？”，但越是学到后面，你会愈发地痛不欲生。</p>
+<h1 id="附：Dev-C-构建系统的实质"><a href="#附：Dev-C-构建系统的实质" class="headerlink" title="附：Dev-C++构建系统的实质"></a>附：Dev-C++构建系统的实质</h1><p>  其实如果你去看一眼创建的工程的目录就会发现，Dev-C++其实是调用的Makefile进行的项目构建。<br>  具体的Makefile脚本就是项目根目录下的“Makefile.win”。<br>  至于Makefile是什么以及有什么用，那就说来话长了，等我以后再写一文吧。<br>  但是要简单说说也行，Makefile提供了一套简单的系统来按需编译源文件然后链接，主要解决的就是编译问题，Makefile只会重新编译那些被修改了的源文件，而保留其他没有被修改的源文件的目标文件，大大减少了大型项目中重复的不必要编译，提高了项目整体的编译速度。<br>  当然Makefile也可以玩得很花，远远不止上述内容，不过那些就真的是另一文的内容了。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/408296605/answer/1534214395">知乎：如何评价Embarcadero Dev-C++? - JohnLu的回答</a><br><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Dev-C++">百度百科：Dev-C++</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C</a>
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag"># 技术</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/12/%E4%BB%8EC%E7%A8%8B%E5%BA%8F%E4%B8%AD%E8%B0%83%E7%94%A8Python%E5%B9%B6%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E5%88%9D%E6%AD%A5%E6%8E%A2%E7%B4%A2/" rel="prev" title="从C程序中调用Python并返回值的初步探索">
+      <i class="fa fa-chevron-left"></i> 从C程序中调用Python并返回值的初步探索
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/13/%E5%9C%A8Linux%E4%B8%AD%E4%BD%BF%E7%94%A8tar%E7%AE%A1%E7%90%86%E5%BD%92%E6%A1%A3%E6%96%87%E4%BB%B6/" rel="next" title="在Linux中使用tar管理归档文件">
+      在Linux中使用tar管理归档文件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFDev-C"><span class="nav-number">2.</span> <span class="nav-text">什么是Dev-C++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">2.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dev-C-%E7%9A%84%E5%90%84%E4%B8%AA%E5%88%86%E6%94%AF"><span class="nav-number">2.2.</span> <span class="nav-text">Dev-C++的各个分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AE%A4%E4%B8%BADev-C-%E6%98%AF%E4%B8%80%E4%B8%AA%E5%A5%BD%E7%9A%84C%E8%AF%AD%E8%A8%80%E6%95%99%E5%85%B7"><span class="nav-number">2.3.</span> <span class="nav-text">我为什么认为Dev-C++是一个好的C语言教具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dev-C-%E7%9A%84%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">Dev-C++的下载与安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDDev-C-%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-number">3.1.</span> <span class="nav-text">下载Dev-C++安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Dev-C"><span class="nav-number">3.2.</span> <span class="nav-text">安装Dev-C++</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dev-C-%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">Dev-C++的基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E5%92%8C%E6%89%93%E5%BC%80%E4%B8%80%E4%B8%AA%E5%B7%A5%E7%A8%8B"><span class="nav-number">4.1.</span> <span class="nav-text">新建和打开一个工程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E5%B7%A5%E7%A8%8B%E4%B8%AD%E6%B7%BB%E5%8A%A0%E6%BA%90%E6%96%87%E4%BB%B6%E5%92%8C%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="nav-number">4.2.</span> <span class="nav-text">向工程中添加源文件和头文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E4%BD%A0%E7%9A%84%E5%B7%A5%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">编译你的工程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E4%BD%A0%E7%9A%84%E5%B7%A5%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text">运行你的工程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8Dev-C-%E4%B8%ADDebug"><span class="nav-number">7.</span> <span class="nav-text">在Dev-C++中Debug</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%9B%BF%E4%BB%A3%E9%BC%A0%E6%A0%87%E6%93%8D%E7%BA%B5"><span class="nav-number">8.</span> <span class="nav-text">使用快捷键替代鼠标操纵</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dev-C-%E5%85%B6%E4%BB%96%E7%9A%84%E4%B8%80%E4%BA%9B%E5%8A%9F%E8%83%BD"><span class="nav-number">9.</span> <span class="nav-text">Dev-C++其他的一些功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7"><span class="nav-number">9.1.</span> <span class="nav-text">代码格式化工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9"><span class="nav-number">9.2.</span> <span class="nav-text">添加编译选项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9D%9F"><span class="nav-number">10.</span> <span class="nav-text">结束</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%84%EF%BC%9ADev-C-%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E8%B4%A8"><span class="nav-number">11.</span> <span class="nav-text">附：Dev-C++构建系统的实质</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">12.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">IAKSH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/IAKSH" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;IAKSH" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:askzrj21@163.com" title="E-Mail → mailto:askzrj21@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">IAKSH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

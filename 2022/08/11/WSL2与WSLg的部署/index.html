@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"iaksh.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="序  今日拿到了新的笔记本，很是开心，但是又得从头配置一遍自己的开发环境了，很是难受。  不过既然事已至此，就随着配置的步伐，顺便水一文吧！ 什么是WSL2和WSLg  其实我更建议你去翻微软的文档。  简单来说，WSL（Windwos下的Linux子系统）提供了一套内核级的翻译机制，能在Windows上翻译执行Linux的ELF格式程序。  而WSL2则是微软妥协的结果，放弃了初代的翻译机制，转">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WSL2与WSLg的部署">
+<meta property="og:url" content="https://iaksh.github.io/2022/08/11/WSL2%E4%B8%8EWSLg%E7%9A%84%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="Hello world!">
+<meta property="og:description" content="序  今日拿到了新的笔记本，很是开心，但是又得从头配置一遍自己的开发环境了，很是难受。  不过既然事已至此，就随着配置的步伐，顺便水一文吧！ 什么是WSL2和WSLg  其实我更建议你去翻微软的文档。  简单来说，WSL（Windwos下的Linux子系统）提供了一套内核级的翻译机制，能在Windows上翻译执行Linux的ELF格式程序。  而WSL2则是微软妥协的结果，放弃了初代的翻译机制，转">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-11T14:04:01.000Z">
+<meta property="article:modified_time" content="2022-09-16T15:38:33.189Z">
+<meta property="article:author" content="IAKSH">
+<meta property="article:tag" content="技术">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://iaksh.github.io/2022/08/11/WSL2%E4%B8%8EWSLg%E7%9A%84%E9%83%A8%E7%BD%B2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>WSL2与WSLg的部署 | Hello world!</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hello world!</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://iaksh.github.io/2022/08/11/WSL2%E4%B8%8EWSLg%E7%9A%84%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="IAKSH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello world!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WSL2与WSLg的部署
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-11 22:04:01" itemprop="dateCreated datePublished" datetime="2022-08-11T22:04:01+08:00">2022-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-09-16 23:38:33" itemprop="dateModified" datetime="2022-09-16T23:38:33+08:00">2022-09-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p>  今日拿到了新的笔记本，很是开心，但是又得从头配置一遍自己的开发环境了，很是难受。<br>  不过既然事已至此，就随着配置的步伐，顺便水一文吧！</p>
+<h2 id="什么是WSL2和WSLg"><a href="#什么是WSL2和WSLg" class="headerlink" title="什么是WSL2和WSLg"></a>什么是WSL2和WSLg</h2><p>  其实我更建议你去翻<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/">微软的文档</a>。<br>  简单来说，WSL（Windwos下的Linux子系统）提供了一套内核级的翻译机制，能在Windows上翻译执行Linux的ELF格式程序。<br>  而WSL2则是微软妥协的结果，放弃了初代的翻译机制，转而投靠了日渐成熟的Hyper-V虚拟机（一个微软开发的内核级虚拟化平台）。<br>  WSL2实际上就是一个运行在Windows Hyper-V虚拟化平台上的Linux虚拟机，但是相比于直接在虚拟化软件中创建虚拟机，WSL2占用资源相对较少，且提供了对Windows资源管理器的部分集成。<br>  WSLg则是在WSL2的基础上增加了一套图像渲染系统，这套系统的Linux底层是Xorg（X11），通过Windows上dwm混成得到窗口。<br>  简而言之，WSLg能够让你在WSL2中运行绝大多数Linux GUI程序。</p>
+<h2 id="本文适用条件"><a href="#本文适用条件" class="headerlink" title="本文适用条件"></a>本文适用条件</h2><p>  WSLg：我的环境是Windows11，Windows10印象中也是支持的。<br>  WSL2：Windows10与Windows11皆可。</p>
+<h1 id="部署WSL2"><a href="#部署WSL2" class="headerlink" title="部署WSL2"></a>部署WSL2</h1><h2 id="开启相应的Windows功能"><a href="#开启相应的Windows功能" class="headerlink" title="开启相应的Windows功能"></a>开启相应的Windows功能</h2><p>  按Win键-&gt;点设置-&gt;点应用-&gt;往下翻-&gt;点更多Windows功能<br>  勾选 Windows虚拟机监控平台 | 适用于Windows的Linux子系统 | 虚拟机平台<br>  <del>（实际上，虚拟机监控平台大概是不必要的，但是为了兼容其他虚拟机，比如VMware，VirtualBox，还是开着吧）</del></p>
+<h2 id="安装WSL2内核文件"><a href="#安装WSL2内核文件" class="headerlink" title="安装WSL2内核文件"></a>安装WSL2内核文件</h2><p>  尽管<a target="_blank" rel="noopener" href="https://github.com/microsoft/WSL2-Linux-Kernel">WSL2-Linux-Kernal项目</a>的Release早已实装5.15版本内核，但并没有提供相应版本的二进制文件。微软的WSL2文档也依然在提供5.10版本内核的链接。<br>  对于这方面，我的建议通常是使用尽可能新的内核，除非你是在配置一个生产环境。<br>  但这次情况特殊，除非你真的有能力编译一个Linux Kernel，那就老老实实用<a target="_blank" rel="noopener" href="https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi">5.10</a>吧。</p>
+<h2 id="设置WSL默认版本至WSL2"><a href="#设置WSL默认版本至WSL2" class="headerlink" title="设置WSL默认版本至WSL2"></a>设置WSL默认版本至WSL2</h2><p>  以管理员权限运行Windows Terminal（或者Windows10的管理员权限运行的PowerShell），运行如下指令<br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --set-default-version 2</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装一个WSL2发行版"><a href="#安装一个WSL2发行版" class="headerlink" title="安装一个WSL2发行版"></a>安装一个WSL2发行版</h2><p>  最方便的做法是在微软商店中搜索然后一键安装，但这样你的WSL2会被安装在C盘里（User文件夹深处，具体太复杂，自己查吧），如果你不在乎那点空间占用，可以这样做。<br>  还有一种方法是下载发行版的appx安装包，然后手动安装，具体见下文。</p>
+<h3 id="一键安装"><a href="#一键安装" class="headerlink" title="一键安装"></a>一键安装</h3><p>  打开微软商店，搜索你喜欢的发行版，一键安装，点击运行，输入用户名和密码，一切就大功告成了。<br>  下次想要进入WSL2可以直接打开Windows Terminal，使用此种安装方式，你所安装的WSL2发行版的选项卡会自动加入到Windows Terminal的备选终端中。</p>
+<h3 id="手动安装"><a href="#手动安装" class="headerlink" title="手动安装"></a>手动安装</h3><p>  微软商店内的应用实际上都被打包为.appx安装包，你可以将其粗略地理解为Android的.apk。<br>  和apk类似的，appx实际上也是一个归档文件，你可以使用任意压缩软件打开它。<br>  如上所属，如果你能拿到某个WSL发行版的appx安装包，你可以将里面的内容解压到一个你认为合适的目录，这样，WSL2就能被安装到任意位置了。<br>  你可以在微软的文档里找到部分发行版appx安装包的下载直连，这里我搬运了一些。</p>
+<p>  <a target="_blank" rel="noopener" href="https://aka.ms/wslubuntu2204">Ubuntu 22.04 LTS</a><br>  <a target="_blank" rel="noopener" href="https://aka.ms/wslubuntu2004arm">Ubuntu 20.04 ARM</a><br>  <a target="_blank" rel="noopener" href="https://aka.ms/wsl-debian-gnulinux">Debian</a><br>  <a target="_blank" rel="noopener" href="https://aka.ms/wsl-kali-linux-new">Kali</a><br>  <a target="_blank" rel="noopener" href="https://aka.ms/wsl-opensuse-tumbleweed">OpenSUSE Tumbleweed</a><br>  <a target="_blank" rel="noopener" href="https://github.com/WhitewaterFoundry/WSLFedoraRemix/releases/">Fedora Remix for WSL</a></p>
+<p>  解压appx后点击相应的xxx.exe即可，我相信你应该找得到（<br>  不过，有的发行版会将多个架构的版本打包在同一个appx里，也就是套了个娃，找找就有了。</p>
+<h2 id="编辑WSL2配置文件"><a href="#编辑WSL2配置文件" class="headerlink" title="编辑WSL2配置文件"></a>编辑WSL2配置文件</h2><p>  WSL2的配置文件不会自动创建，你需要在自己的User文件夹中新建一个叫“.wslconfig”的文件，注意只有后缀没有名字。<br>  用你最喜欢的文本编辑器打开它，在第一行写上“[wsl2]”，即可开始配置你的WSL2。<br>  这里我提供了一份带有注释的配置文件，仅供参考。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[wsl2]</span><br><span class="line">memory=4GB                  #WSL2最大可使用多少内存，单位可为GB或MB</span><br><span class="line">swap=1GB                    #WSL2最大可用的交换空间，其实就是虚拟内存，单位同上</span><br><span class="line">processor=4                 #分配给WSl2多少个CPU核心（其实是线程）（似乎对Intel 12th大小核不起作用）</span><br><span class="line">localhostForwarding=true    #是否将WSL2的localhost覆盖到物理机的localhost</span><br></pre></td></tr></table></figure>
+<p>  注意：当WSL2完全关闭并且等待一段时间后才能加载修改过的.wslconfig（详见下述文档中的“第 8 秒的规则”），不过你可以在PowerShell中使用指令“wsl –shutdown”来加快这个过程。<br>  其实你甚至能在.wslconfig中指定WSL2使用的内核镜像 ，根据这一特性你甚至能打包任何Linux发行版到WSl2，但我懒得写了。<br>  更多内容见<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/wsl-config">微软的WSL高级配置文档</a></p>
+<h2 id="在WSL2中访问物理机的文件"><a href="#在WSL2中访问物理机的文件" class="headerlink" title="在WSL2中访问物理机的文件"></a>在WSL2中访问物理机的文件</h2><p>  <em>注：不同的发行版可能有不同的挂在策略，此处仅列出Debian与Ubuntu通用的方案。</em><br>  在WSL2启动时，物理机的各个磁盘会被自动挂载至&#x2F;mnt目录，根据盘符（但是是小写）即可进入物理机对应的磁盘。<br>  例如，我在WSL2（debian）中进入物理机的桌面文件夹，指令为：$cd &#x2F;mnt&#x2F;c&#x2F;Users&#x2F;iaksh&#x2F;Desktop<br>  实际上本地磁盘在WSL2中的挂载是通过网络实现的，这也是WSL2与物理机目录IO缓慢的原因。</p>
+<h1 id="部署WSLg"><a href="#部署WSLg" class="headerlink" title="部署WSLg"></a>部署WSLg</h1><h2 id="有关本文时效性的警告"><a href="#有关本文时效性的警告" class="headerlink" title="有关本文时效性的警告"></a>有关本文时效性的警告</h2><p>  虽然Windows11和WSLg的推出都有一段时间了，但WSLg目前的安装方式总是让我感到奇怪。<br>  这样的安装方式说不定哪天就被微软吃掉了，所以当你看见这篇文章的时候，请明确本文所属有关WSLg的内容可能已经失效。</p>
+<h2 id="在WSL2的基础上手动安装WSLg"><a href="#在WSL2的基础上手动安装WSLg" class="headerlink" title="在WSL2的基础上手动安装WSLg"></a>在WSL2的基础上手动安装WSLg</h2><p>  以管理员权限打开Windows Terminal（Windows10下以管理员权限打开PowerShell），在确保WSL2已经关闭的情况下输入指令“wsl –update”。<br>  经过漫长的更新后，你的WSL2内核应该已经支持WSLg了。<br>  此时你可以在WSL2里运行任意GUI程序（比如从你的包管理器下载一个热乎的GIMP然后运行），需要注意的是加载时间可能会略长（视配置而定），而且当某些程序占用全屏时，运行在WSL2上的X11将会崩溃，紧接着Linux GUI程序也会崩溃。（目前发现QQ截图会触发此BUG）。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag"># 技术</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/11/apt%E6%8A%A5%E9%94%99Certificate-verification-failed%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" rel="prev" title="apt报错Certificate verification failed的解决方案">
+      <i class="fa fa-chevron-left"></i> apt报错Certificate verification failed的解决方案
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/12/%E4%BB%8E%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%B0%E5%8D%81%E8%BF%9B%E5%88%B6%E7%9A%84%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/" rel="next" title="从二进制到十进制的转换方法">
+      从二进制到十进制的转换方法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFWSL2%E5%92%8CWSLg"><span class="nav-number">1.1.</span> <span class="nav-text">什么是WSL2和WSLg</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E6%96%87%E9%80%82%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">本文适用条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2WSL2"><span class="nav-number">2.</span> <span class="nav-text">部署WSL2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E7%9B%B8%E5%BA%94%E7%9A%84Windows%E5%8A%9F%E8%83%BD"><span class="nav-number">2.1.</span> <span class="nav-text">开启相应的Windows功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WSL2%E5%86%85%E6%A0%B8%E6%96%87%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">安装WSL2内核文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEWSL%E9%BB%98%E8%AE%A4%E7%89%88%E6%9C%AC%E8%87%B3WSL2"><span class="nav-number">2.3.</span> <span class="nav-text">设置WSL默认版本至WSL2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%80%E4%B8%AAWSL2%E5%8F%91%E8%A1%8C%E7%89%88"><span class="nav-number">2.4.</span> <span class="nav-text">安装一个WSL2发行版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85"><span class="nav-number">2.4.1.</span> <span class="nav-text">一键安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85"><span class="nav-number">2.4.2.</span> <span class="nav-text">手动安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%BE%91WSL2%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.5.</span> <span class="nav-text">编辑WSL2配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8WSL2%E4%B8%AD%E8%AE%BF%E9%97%AE%E7%89%A9%E7%90%86%E6%9C%BA%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-number">2.6.</span> <span class="nav-text">在WSL2中访问物理机的文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2WSLg"><span class="nav-number">3.</span> <span class="nav-text">部署WSLg</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%85%B3%E6%9C%AC%E6%96%87%E6%97%B6%E6%95%88%E6%80%A7%E7%9A%84%E8%AD%A6%E5%91%8A"><span class="nav-number">3.1.</span> <span class="nav-text">有关本文时效性的警告</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8WSL2%E7%9A%84%E5%9F%BA%E7%A1%80%E4%B8%8A%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85WSLg"><span class="nav-number">3.2.</span> <span class="nav-text">在WSL2的基础上手动安装WSLg</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">IAKSH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/IAKSH" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;IAKSH" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:askzrj21@163.com" title="E-Mail → mailto:askzrj21@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">IAKSH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

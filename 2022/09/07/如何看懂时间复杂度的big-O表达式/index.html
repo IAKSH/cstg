@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"iaksh.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="0x0从前我一直看不懂这些，其实大抵还是因为懒，最近终于有一些理由让我去查一些资料了，所以顺手写一点。我也不是什么大佬，理解上难免有偏差，如果有误，烦请各位指出，感谢。 不知道你在学习算法的过程中，有没有遇见过这个东西：  $O(1)$  $O(n)$  $O(x^2)$  $O(n log n)$  $O(n)$  $O(log n)$  $O(n!)$  $O(2^n)$   这是时间复杂度的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何看懂时间复杂度的big-O表达式">
+<meta property="og:url" content="https://iaksh.github.io/2022/09/07/%E5%A6%82%E4%BD%95%E7%9C%8B%E6%87%82%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%9A%84big-O%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Hello world!">
+<meta property="og:description" content="0x0从前我一直看不懂这些，其实大抵还是因为懒，最近终于有一些理由让我去查一些资料了，所以顺手写一点。我也不是什么大佬，理解上难免有偏差，如果有误，烦请各位指出，感谢。 不知道你在学习算法的过程中，有没有遇见过这个东西：  $O(1)$  $O(n)$  $O(x^2)$  $O(n log n)$  $O(n)$  $O(log n)$  $O(n!)$  $O(2^n)$   这是时间复杂度的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.postimg.cc/FRxy8PZ1/1.png">
+<meta property="og:image" content="https://i.postimg.cc/T27mb5H8/2.png">
+<meta property="og:image" content="https://i.postimg.cc/v8NgTFcb/2022-09-06-20-35-41-image.png">
+<meta property="og:image" content="https://i.postimg.cc/MXJzBYCb/2022-09-06-20-48-17-image.png">
+<meta property="og:image" content="https://i.postimg.cc/7Y15VCKY/2022-09-07-22-50-42-image.png">
+<meta property="article:published_time" content="2022-09-07T15:15:27.000Z">
+<meta property="article:modified_time" content="2022-10-04T08:20:54.082Z">
+<meta property="article:author" content="IAKSH">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.postimg.cc/FRxy8PZ1/1.png">
+
+<link rel="canonical" href="https://iaksh.github.io/2022/09/07/%E5%A6%82%E4%BD%95%E7%9C%8B%E6%87%82%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%9A%84big-O%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>如何看懂时间复杂度的big-O表达式 | Hello world!</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hello world!</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://iaksh.github.io/2022/09/07/%E5%A6%82%E4%BD%95%E7%9C%8B%E6%87%82%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%9A%84big-O%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="IAKSH">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello world!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何看懂时间复杂度的big-O表达式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-09-07 23:15:27" itemprop="dateCreated datePublished" datetime="2022-09-07T23:15:27+08:00">2022-09-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-04 16:20:54" itemprop="dateModified" datetime="2022-10-04T16:20:54+08:00">2022-10-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="0x0"><a href="#0x0" class="headerlink" title="0x0"></a>0x0</h1><p>从前我一直看不懂这些，其实大抵还是因为懒，最近终于有一些理由让我去查一些资料了，所以顺手写一点。我也不是什么大佬，理解上难免有偏差，如果有误，烦请各位指出，感谢。</p>
+<p>不知道你在学习算法的过程中，有没有遇见过这个东西：</p>
+<ul>
+<li><p>$O(1)$</p>
+</li>
+<li><p>$O(n)$</p>
+</li>
+<li><p>$O(x^2)$</p>
+</li>
+<li><p>$O(n log n)$</p>
+</li>
+<li><p>$O(n)$</p>
+</li>
+<li><p>$O(log n)$</p>
+</li>
+<li><p>$O(n!)$</p>
+</li>
+<li><p>$O(2^n)$</p>
+</li>
+</ul>
+<p>这是<strong>时间复杂度</strong>的<strong>大O表示法</strong>，其中的O是一个函数，定义为$T[n] &#x3D; O(f(n))$，它不仅可以表示时间的复杂度，还能表示空间的复杂度。</p>
+<p>那么，什么是时间复杂度呢？</p>
+<h1 id="0x1：时间复杂度"><a href="#0x1：时间复杂度" class="headerlink" title="0x1：时间复杂度"></a>0x1：时间复杂度</h1><p>试想一下，如果我给你这样一排…P，请你挨个拾取它们。</p>
+<img src="https://i.postimg.cc/FRxy8PZ1/1.png" width=75 height=25/>
+
+<p>听起来就很容易，那这样呢？</p>
+<img src="https://i.postimg.cc/T27mb5H8/2.png" width=1000 height=30/>
+
+<p>很明显，如果设P点的个数为x，捡起一个P点需要的时间固定，那么对于捡起所有P点所耗费的时间总量t在大体上有如下图像：</p>
+<img src="https://i.postimg.cc/v8NgTFcb/2022-09-06-20-35-41-image.png" width=300 height=200/>
+
+<p>这实际上是一个 y &#x3D; x (x $\geqslant$ 0，下略) 图像</p>
+<p>类似的，如果我要求你每捡起一个P点就释放P点总数个Bomb，那图像会变成这样：</p>
+<img src="https://i.postimg.cc/MXJzBYCb/2022-09-06-20-48-17-image.png" width=300 height=200/>
+
+<p>这实际上是一个 $y &#x3D; x^2$ 图像</p>
+<p>拿第一个例子来说，像这样的，以捡起所有P点为例，这个操作所需要耗费的时间 <strong>t</strong> 随着P点数量 <strong>x</strong> 的增多，以一个恒定的速率 <strong>k</strong>（假设捡起两个P点的操作之间没有间隔，k为捡起一个P点的用时），那么就有 $t &#x3D; kx$，由此我们可以说：这个操作的时间复杂度可以表示为 $O(n)$</p>
+<p>现在你再看看那些 $O(1)$，$O(n^2)$，是不是有点感觉了？</p>
+<h1 id="0x2：big-O表达式"><a href="#0x2：big-O表达式" class="headerlink" title="0x2：big-O表达式"></a>0x2：big-O表达式</h1><p>O(…)，即大O表达式（big-O），常用于表达某种操作（算法）的<strong>耗时上界</strong>，它从大体上<strong>粗略地</strong>描述了一个算法所需要的时间，即它的<strong>时间复杂度</strong>。正如前例，big-O表达式使用一个简单的式子来从大体上形容一种耗时的概念，通过big-O表达式，我们能一眼看出操作大体上的时间复杂度，即耗时与数据量的大体关系。</p>
+<p>需要注意的是，就以 $O(n^2)$ 而言，经管实际上的耗时可能并不是 $t &#x3D; n^2$（或者是我们举的第一个例子，捡起两个P点之间是肯定有时间间隔的），只是因为某种关系，它的整体耗时的变化曲线和 $y &#x3D; x^2$ 类似（至少看起来有那么一点类似），所以我们可以用 $O(n^2)$ 来形容它的时间复杂度。</p>
+<p>数学需要讲究逻辑的严密，准确，但我们学的毕竟不是真正的数学。</p>
+<h1 id="0x3：三个简单的大O表达式以及对应代码示例"><a href="#0x3：三个简单的大O表达式以及对应代码示例" class="headerlink" title="0x3：三个简单的大O表达式以及对应代码示例"></a>0x3：三个简单的大O表达式以及对应代码示例</h1><ol>
+<li>$O(1)$</li>
+</ol>
+<p>  表示时间复杂度是一个常数，总耗时恒定。</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">getMax</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b ? a : b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>$O(n)$</li>
+</ol>
+<p>  表示时间复杂度解析图像类似于 $y &#x3D; x$ 的图像，总耗时随着处理量的增加而线性增长。</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">getMax</span><span class="params">(std::initializer_list&lt;<span class="type">int</span>&gt; list)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> buffer = INT_MIN;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; item : list) <span class="keyword">if</span>(item &gt; buffer) buffer = item;</span><br><span class="line">    <span class="keyword">return</span> buffer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>$O(n^2)$</li>
+</ol>
+<p>  表示时间复杂度解析图像类似于 $y &#x3D; x^2$ 图像，随着处理量的增加，总耗时成次方增长。</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">foreachAudioListDo</span><span class="params">(AudioListManager&amp; manager)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; list : manager)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; sound : list) sound.<span class="built_in">play</span>();</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="0x4：big-O的加法"><a href="#0x4：big-O的加法" class="headerlink" title="0x4：big-O的加法"></a>0x4：big-O的加法</h1><p>之前提过一点，时间复杂度表示的是<strong>上界</strong>（极限），当两个算法共用（此处不考虑嵌套）时，整体的时间复杂度未必是直接相加，全看二者之中占大头者，例如：</p>
+<p>$O(n) + O(2^n) &#x3D; O(2^n)$</p>
+<h1 id="0x5：关于-O-log-n"><a href="#0x5：关于-O-log-n" class="headerlink" title="0x5：关于$O(log n)$"></a>0x5：关于$O(log n)$</h1><p>需要注意的是，这里的 log 是省略了下标 2 的，实际上应该写做 $O(log_2n)$ ，但是这样做毕竟太麻烦，在一些环境下也打不出这个下标，就简化到只留下 log 了。</p>
+<p>带 log 的几个大O表达式都比较迷惑人，实际上，同其他任何的大O表达式一样，只要画出他们的图像即可。</p>
+<img src="https://i.postimg.cc/7Y15VCKY/2022-09-07-22-50-42-image.png" width=300 height=200/>
+
+<p>这是 $y &#x3D; log_2x$ 的图像</p>
+<p>$O(log n)$ 的一个典型例子是二分查找，在二分查找中，每查找一次，下一次查找所需要处理的数据量就是上一次的一半。</p>
+<p>别看着 $log_2n$ 好像很复杂，实际上，$O(log_2n)$ 介于 $O(n)$ 和 $O(1)$ 之间，是全体程序员努力的方向。</p>
+<h1 id="0x6：参考资料"><a href="#0x6：参考资料" class="headerlink" title="0x6：参考资料"></a>0x6：参考资料</h1><p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%A4%A7O%E8%A1%A8%E7%A4%BA%E6%B3%95/1851162">大O表示法_百度百科 (baidu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/248284657">O(log(N))是什么意思 - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1DY4y1H7DGhttps://www.bilibili.com/video/BV1DY4y1H7DG">常见的大O表示法有哪些？时间复杂度是什么？(bilibili.com)</a></p>
+<p>本文使用的函数图像生成并截取自<a target="_blank" rel="noopener" href="https://www.desmos.com/calculator?lang=zh-CN">Desmos | 图形计算器</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/31/C-%E4%B8%AD%E7%9A%84%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E7%AC%A6/" rel="prev" title="C++中的重载运算符">
+      <i class="fa fa-chevron-left"></i> C++中的重载运算符
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/09/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E5%92%8C%E5%93%88%E5%B8%8C%E8%A1%A8/" rel="next" title="哈希算法和哈希表">
+      哈希算法和哈希表 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x0"><span class="nav-number">1.</span> <span class="nav-text">0x0</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x1%EF%BC%9A%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">2.</span> <span class="nav-text">0x1：时间复杂度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x2%EF%BC%9Abig-O%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">0x2：big-O表达式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x3%EF%BC%9A%E4%B8%89%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%A4%A7O%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%BA%94%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">0x3：三个简单的大O表达式以及对应代码示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x4%EF%BC%9Abig-O%E7%9A%84%E5%8A%A0%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">0x4：big-O的加法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x5%EF%BC%9A%E5%85%B3%E4%BA%8E-O-log-n"><span class="nav-number">6.</span> <span class="nav-text">0x5：关于$O(log n)$</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x6%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">7.</span> <span class="nav-text">0x6：参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">IAKSH</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/IAKSH" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;IAKSH" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:askzrj21@163.com" title="E-Mail → mailto:askzrj21@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">IAKSH</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
