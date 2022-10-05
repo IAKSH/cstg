@@ -45,6 +45,8 @@ add_library(utools)
 target_sources(utools PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/utools/utools.c
     ${CMAKE_CURRENT_LIST_DIR}/utools/utools.h
+    ${CMAKE_CURRENT_LIST_DIR}/utools/linklist.c
+    ${CMAKE_CURRENT_LIST_DIR}/utools/linklist.h
     )
 
 add_executable(cstg ${CMAKE_CURRENT_LIST_DIR}/engine/main.c)
