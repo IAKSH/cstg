@@ -1,4 +1,5 @@
 #pragma once
+#include <stdlib.h>
 
 typedef struct LinkListNode {
     void* var;
@@ -11,8 +12,8 @@ typedef struct LinkListHead {
 } LinkListHead_t;
 
 extern void linkListInitialize(LinkListHead_t*);
-extern void linkListInsertTail(LinkListHead_t*, void*);
-extern void linkListInsertFront(LinkListHead_t*, void*);
+extern void linkListInsertTail(LinkListHead_t*, void*,size_t size);
+extern void linkListInsertFront(LinkListHead_t*, void*,size_t size);
 extern void linkListPopTail(LinkListHead_t*);
 extern void linkListPopHead(LinkListHead_t*);
 extern void linkListRemove(LinkListHead_t*, int);
