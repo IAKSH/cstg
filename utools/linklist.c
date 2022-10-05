@@ -147,3 +147,20 @@ int linkListLength(LinkListHead_t* head)
         if(!node->next) break;
     return i;
 }
+
+void linkListClean(LinkListHead_t* head)
+{
+    LinkListNode_t* node = head->first;
+    if(node)
+    {
+        while(node->next)
+        {
+            node = node->next;
+            free(node->forward->var);
+            free(node->forward);
+        }
+        free(node->var);
+        free(node);
+        head->first = NULL;
+    }
+}
