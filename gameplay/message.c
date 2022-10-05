@@ -12,7 +12,7 @@ void msgsAdd(GamePlayMsg* msg) { linkListInsertTail(&globalMsgs, msg,sizeof(*msg
 void msgsForeach(void (*func)(GamePlayMsg*))
 {
     LinkListNode_t* node = globalMsgs.first;
-    while(node != NULL)
+    while(node)
     {
         func(node->var);
         node = node->next;
