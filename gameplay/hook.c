@@ -1,54 +1,28 @@
 #include "hook.h"
-
-typedef struct HookNode {
-    void*            func;
-    struct HookNode* next;
-} HookNode_t;
-
-typedef struct {
-    HookNode_t* first;
-} HookLinkListHead;
+#include "function.h"
+#include "linklist.h"
+#include <utools.h>
 
 // invisible from outside
-static HookLinkListHead globalHooks;
+static LinkListHead_t globalHooks;
 
-void hooksInit(void) { globalHooks.first = NULL; }
+void hooksInit(void) { linkListInitialize(&globalHooks);}
 
 void hooksAdd(void (*func)(GamePlayMsg*))
 {
-    if(globalHooks.first == NULL)
-    {
-        globalHooks.first       = (HookNode_t*)malloc(sizeof(HookNode_t));
-        globalHooks.first->next = NULL;
-        // copy
-        globalHooks.first->func = func;
-    }
-    else
-    {
-        HookNode_t* node = globalHooks.first;
-        while(node->next != NULL) node = node->next;
-        node->next = (HookNode_t*)malloc(sizeof(HookNode_t));
-        node       = node->next;
-        node->next = NULL;
-        node->func = func;
-    }
+    Function_t f = {func};
+    linkListInsertTail(&globalHooks,&f,sizeof(f));
 }
 
 void hooksRun(void)
 {
-    HookNode_t* node = globalHooks.first;
-    if(node == NULL)
-        return;
-    else if(node->next == NULL) { msgsForeach(node->func); }
-    else
+    LinkListNode_t* node = globalHooks.first;
+    Function_t* f;
+    while(node)
     {
-        while(node->next != NULL)
-        {
-            msgsForeach(node->func);
-            node = node->next;
-        }
-        // call the last hook
-        msgsForeach(node->func);
+        f = node->var;
+        msgsForeach(f->func);
+        node = node->next;
     }
     msgsClean();
 }
