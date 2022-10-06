@@ -1,5 +1,5 @@
 #include "drawsort.h"
-#include "gameobject.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -9,8 +9,13 @@ typedef struct {
 
 // invisibel from outside
 static DrawLinkListHead draws;
+static int drawAmount;
 
-void drawsInit() { draws.first = NULL; }
+void drawsInit()
+{
+    draws.first = NULL;
+    drawAmount = 0;
+}
 
 void drawsAdd(GameObject_t* go)
 {
@@ -30,6 +35,7 @@ void drawsAdd(GameObject_t* go)
         _da_node->next = NULL;
         _da_node->go = go;
     }
+    drawAmount++;
 }
 
 void drawsForeach(void (*func)(DrawLinkListNode_t*))
@@ -56,40 +62,35 @@ void drawsClean(void)
         free(_dc_preNode);
     }
     draws.first = NULL;
+    drawAmount = 0;
 }
+
+ DrawLinkListNode_t* drawLinkListGetAt(int index)
+ {
+    DrawLinkListNode_t* node = draws.first;
+    for(int i = 0;i < index;i++)
+    {
+        if(!node)
+        {
+            fprintf(stderr,"drawsGetAt() failed: out of range\n");
+            abort();
+        }
+        node = node->next;
+    }
+    return node;
+ }
 
 void drawsSort(void)
 {
-    // Bubble Sort
-    static int i, count, num;
-    static DrawLinkListNode_t *node, *preNode;
-    GameObject_t* goBuffer;
-    node = draws.first;
-    count = 0;
-
-    while(node != NULL)
+    int i,j;
+    for(i = 1;i < drawAmount;i++)
     {
-        ++count;
-        node = node->next;
-    }
-
-    // this loop is so bad , may cause performance issues
-    // better to replace this with a loop using C(i,2)
-    // anyway , I'm lazy , so...
-    for(int i = 0; i < count - 1; i++)
-    {
-        node = draws.first;
-        while(node != NULL)
+        j = i - 1;
+        while((j >= 0) && (drawLinkListGetAt(i)->go->z < drawLinkListGetAt(j)->go->z))
         {
-            preNode = node;
-            node = node->next;
-            if(node == NULL) break;
-            if(preNode->go->z < node->go->z)
-            {
-                goBuffer = node->go;
-                node->go = preNode->go;
-                preNode->go = goBuffer;
-            }
+            memcpy(drawLinkListGetAt(j + 1),drawLinkListGetAt(j),sizeof(DrawLinkListNode_t));
+            j--;
         }
+        memcpy(drawLinkListGetAt(j + 1),drawLinkListGetAt(i),sizeof(DrawLinkListNode_t));
     }
 }
