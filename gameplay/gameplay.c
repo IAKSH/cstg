@@ -6,14 +6,14 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 
-SDL_Window*   globalWindow;
+SDL_Window* globalWindow;
 SDL_Renderer* globalRenderer;
-SDL_Texture*  globalTexture;
+SDL_Texture* globalTexture;
 // surface can't support hardware acceleration
 // static SDL_Surface* surface;
 SDL_Event globalEvent;
-SDL_Rect  windowFillRect    = { 0, 0, 640, 480 };
-bool      gameShouldBeClose = false;
+SDL_Rect windowFillRect = { 0, 0, 640, 480 };
+bool gameShouldBeClose = false;
 
 void gameplayInit()
 {
@@ -26,7 +26,7 @@ void gameplayInit()
     globalWindow = SDL_CreateWindow("Game Demo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
     // Renderer's Hardware Acceleration enabled , together with VSync
     globalRenderer = SDL_CreateRenderer(globalWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    globalTexture  = SDL_CreateTexture(globalRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 640, 480);
+    globalTexture = SDL_CreateTexture(globalRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 640, 480);
 }
 
 void gamePlayDestory()

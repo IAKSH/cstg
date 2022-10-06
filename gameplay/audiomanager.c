@@ -8,8 +8,8 @@
 // together with the Link List in gomanager.c
 
 typedef struct AudioNode {
-    char              name[16];
-    Mix_Chunk*        chunk;
+    char name[16];
+    Mix_Chunk* chunk;
     struct AudioNode* next;
 } AudioNode_t;
 
@@ -21,7 +21,7 @@ void audioInit(void)
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 8, 2048);
     strcpy(head.name, "[NOT_AUDIO]");
     head.chunk = NULL;
-    head.next  = NULL;
+    head.next = NULL;
 }
 
 void audioRelease(void)
@@ -35,7 +35,7 @@ void loadAudio(char* name, char* path)
 {
     if(head.next == NULL)
     {
-        head.next       = (AudioNode_t*)malloc(sizeof(AudioNode_t));
+        head.next = (AudioNode_t*)malloc(sizeof(AudioNode_t));
         head.next->next = NULL;
         loadAudio(name, path);
     }

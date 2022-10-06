@@ -12,8 +12,8 @@ typedef struct LinkListHead {
 } LinkListHead_t;
 
 extern void linkListInitialize(LinkListHead_t*);
-extern void linkListInsertTail(LinkListHead_t*, void*,size_t);
-extern void linkListInsertFront(LinkListHead_t*, void*,size_t);
+extern void linkListInsertTail(LinkListHead_t*, void*, size_t);
+extern void linkListInsertFront(LinkListHead_t*, void*, size_t);
 extern void linkListPopTail(LinkListHead_t*);
 extern void linkListPopHead(LinkListHead_t*);
 extern void linkListRemove(LinkListHead_t*, int);

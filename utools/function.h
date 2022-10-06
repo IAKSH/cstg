@@ -1,6 +1,5 @@
 #pragma once
 
-typedef struct Function
-{
+typedef struct Function {
     void* func;
 } Function_t;

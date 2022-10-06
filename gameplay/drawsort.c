@@ -16,9 +16,9 @@ void drawsAdd(GameObject_t* go)
 {
     if(draws.first == NULL)
     {
-        draws.first       = (DrawLinkListNode_t*)malloc(sizeof(DrawLinkListNode_t));
+        draws.first = (DrawLinkListNode_t*)malloc(sizeof(DrawLinkListNode_t));
         draws.first->next = NULL;
-        draws.first->go   = go;
+        draws.first->go = go;
     }
     else
     {
@@ -26,9 +26,9 @@ void drawsAdd(GameObject_t* go)
         _da_node = draws.first;
         while(_da_node->next != NULL) _da_node = _da_node->next;
         _da_node->next = (DrawLinkListNode_t*)malloc(sizeof(DrawLinkListNode_t));
-        _da_node       = _da_node->next;
+        _da_node = _da_node->next;
         _da_node->next = NULL;
-        _da_node->go   = go;
+        _da_node->go = go;
     }
 }
 
@@ -52,7 +52,7 @@ void drawsClean(void)
     while(_dc_node != NULL)
     {
         _dc_preNode = _dc_node;
-        _dc_node    = _dc_node->next;
+        _dc_node = _dc_node->next;
         free(_dc_preNode);
     }
     draws.first = NULL;
@@ -61,10 +61,10 @@ void drawsClean(void)
 void drawsSort(void)
 {
     // Bubble Sort
-    static int                 i, count, num;
+    static int i, count, num;
     static DrawLinkListNode_t *node, *preNode;
-    GameObject_t*              goBuffer;
-    node  = draws.first;
+    GameObject_t* goBuffer;
+    node = draws.first;
     count = 0;
 
     while(node != NULL)
@@ -82,12 +82,12 @@ void drawsSort(void)
         while(node != NULL)
         {
             preNode = node;
-            node    = node->next;
+            node = node->next;
             if(node == NULL) break;
             if(preNode->go->z < node->go->z)
             {
-                goBuffer    = node->go;
-                node->go    = preNode->go;
+                goBuffer = node->go;
+                node->go = preNode->go;
                 preNode->go = goBuffer;
             }
         }

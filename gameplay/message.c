@@ -5,9 +5,9 @@
 // invisibel from outside
 static LinkListHead_t globalMsgs;
 
-void msgsInit(void) {linkListInitialize(&globalMsgs);};
+void msgsInit(void) { linkListInitialize(&globalMsgs); };
 
-void msgsAdd(GamePlayMsg* msg) { linkListInsertTail(&globalMsgs, msg,sizeof(*msg)); }
+void msgsAdd(GamePlayMsg* msg) { linkListInsertTail(&globalMsgs, msg, sizeof(*msg)); }
 
 void msgsForeach(void (*func)(GamePlayMsg*))
 {

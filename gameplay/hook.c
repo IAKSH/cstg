@@ -6,12 +6,12 @@
 // invisible from outside
 static LinkListHead_t globalHooks;
 
-void hooksInit(void) { linkListInitialize(&globalHooks);}
+void hooksInit(void) { linkListInitialize(&globalHooks); }
 
 void hooksAdd(void (*func)(GamePlayMsg*))
 {
-    Function_t f = {func};
-    linkListInsertTail(&globalHooks,&f,sizeof(f));
+    Function_t f = { func };
+    linkListInsertTail(&globalHooks, &f, sizeof(f));
 }
 
 void hooksRun(void)

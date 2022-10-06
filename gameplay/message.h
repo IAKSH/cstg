@@ -34,7 +34,7 @@ struct _GamePlayKBDown {
 enum COMMAND_TYPE { HELP, QUILT };
 
 struct _Command {
-    int   type;
+    int type;
     char* args[4];
 };
 
@@ -56,7 +56,7 @@ struct _GameObjectAnnouncement {
 };
 
 union _Content {
-    struct _GamePlayKBUp   keyboardUp;
+    struct _GamePlayKBUp keyboardUp;
     struct _GamePlayKBDown keyboardDown;
     // struct _MouseWellUp mouseWellUp;
     // struct _MouseWellDown mouseWellDown;
@@ -64,14 +64,14 @@ union _Content {
     // struct _MouseClickLeftUp mouseClickLeftUp;
     // struct _MouseClickRightDown mouseClickRightDown;
     // struct _MouseClickRightUp mouseClickRightUp;
-    struct _Command                commmand;
-    struct _GameObjectCreate       gameobjectCreate;
-    struct _GameObjectDestroy      gameobjectDestroy;
+    struct _Command commmand;
+    struct _GameObjectCreate gameobjectCreate;
+    struct _GameObjectDestroy gameobjectDestroy;
     struct _GameObjectAnnouncement gameobjectAnnouncement;
 };
 
 typedef struct {
-    int            type;
+    int type;
     union _Content content;
 } GamePlayMsg;
 

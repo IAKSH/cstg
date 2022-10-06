@@ -3,7 +3,7 @@
 #include <SDL2/SDL_render.h>
 
 typedef struct DrawLinkListNode {
-    GameObject_t*            go;
+    GameObject_t* go;
     struct DrawLinkListNode* next;
 } DrawLinkListNode_t;
 

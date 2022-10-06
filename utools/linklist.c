@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 
-static void linklistAppenAtHead(LinkListHead_t* head, void* val,size_t size)
+static void linklistAppenAtHead(LinkListHead_t* head, void* val, size_t size)
 {
     LinkListNode_t* newNode = (LinkListNode_t*)malloc(sizeof(LinkListNode_t));
     newNode->forward = NULL;
     newNode->next = NULL;
     newNode->var = malloc(size);
-    memcpy(newNode->var,val,size);
+    memcpy(newNode->var, val, size);
     head->first = newNode;
 }
 
@@ -30,7 +30,7 @@ static LinkListNode_t* iterateLinkListNodeTo(LinkListNode_t* node, int index)
 void linkListInitialize(LinkListHead_t* head) { head->first = NULL; }
 
 // this function will copy val in heap
-void linkListInsertTail(LinkListHead_t* head, void* val,size_t size)
+void linkListInsertTail(LinkListHead_t* head, void* val, size_t size)
 {
     if(head->first)
     {
@@ -40,15 +40,15 @@ void linkListInsertTail(LinkListHead_t* head, void* val,size_t size)
         newNode->forward = node;
         newNode->next = NULL;
         newNode->var = malloc(size);
-        memcpy(newNode->var,val,size);
+        memcpy(newNode->var, val, size);
         node->next = newNode;
     }
     else
-        linklistAppenAtHead(head, val,size);
+        linklistAppenAtHead(head, val, size);
 }
 
 // this function will copy val in heap
-void linkListInsertFront(LinkListHead_t* head, void* val,size_t size)
+void linkListInsertFront(LinkListHead_t* head, void* val, size_t size)
 {
     if(head->first)
     {
@@ -57,12 +57,12 @@ void linkListInsertFront(LinkListHead_t* head, void* val,size_t size)
         newNode->forward = NULL;
         newNode->next = node;
         newNode->var = malloc(size);
-        memcpy(newNode->var,val,size);
+        memcpy(newNode->var, val, size);
         head->first = newNode;
         node->forward = newNode;
     }
     else
-        linklistAppenAtHead(head, val,size);
+        linklistAppenAtHead(head, val, size);
 }
 
 void linkListPopTail(LinkListHead_t* head)

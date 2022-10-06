@@ -28,8 +28,8 @@ void player_init()
     player.x         = 0;
     player.y         = 0;
     player.z         = 0;
-    player.w         = 100;
-    player.h         = 100;
+    player.w         = 50;
+    player.h         = 50;
     player.speedX    = 0;
     player.speedY    = 0;
     player.hp        = 1;
@@ -42,7 +42,7 @@ void player_init()
 
     // preload images
     // TODO:...
-    SDL_Surface* sur = custom_loadImage("a.png");  // temp code
+    SDL_Surface* sur = custom_loadImage("unknow.png");  // temp code
 
     // add preloaded images to this game object
     player.texture = SDL_CreateTextureFromSurface(globalRenderer, sur);
