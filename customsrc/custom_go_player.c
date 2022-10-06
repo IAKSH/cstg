@@ -128,9 +128,9 @@ static void hook_testSound(GamePlayMsg* msg)
     if(msg->type == KEYBOARD_DOWN)
     {
         if(msg->content.keyboardDown.keycode == SDLK_z) playAudio(-1, "sound_01", 0);
-        if(msg->content.keyboardDown.keycode == SDLK_x) stopAudio(-1);
-        if(msg->content.keyboardDown.keycode == SDLK_c) resumeAudio(-1);
-        if(msg->content.keyboardDown.keycode == SDLK_v) setChannelVolume(-1, 50);
-        if(msg->content.keyboardDown.keycode == SDLK_b) setChannelVolume(-1, 100);
+        else if(msg->content.keyboardDown.keycode == SDLK_x) stopAudio(-1);
+        else if(msg->content.keyboardDown.keycode == SDLK_c) resumeAudio(-1);
+        else if(msg->content.keyboardDown.keycode == SDLK_v) setChannelVolume(-1, 50);
+        else if(msg->content.keyboardDown.keycode == SDLK_b) setChannelVolume(-1, 100);
     }
 }
