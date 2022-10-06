@@ -21,12 +21,13 @@ static void cameraInit(void)
 {
     camera.x = 0;
     camera.y = 0;
-    //camera.z = 2;
+    camera.z = 50;
     //camera.zoom = 1.0f;
 }
 
 void gameplayInit(void)
 {
+    cameraInit();
     if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
     {
         SDL_Log("SDL2 initialize failed.");
@@ -82,18 +83,13 @@ SDL_Rect gameobjectRect;
 
 static void _func(DrawLinkListNode_t* node)
 {
-    //if(node->go->z > camera.z) return;
+    // camera will stay on the left up corner of the window
+    if(node->go->z > camera.z)
+    {
+        return;
+    }
     gameobjectRect.x = node->go->x - camera.x;
     gameobjectRect.y = node->go->y - camera.y;
-    gameobjectRect.w = node->go->w;
-    gameobjectRect.h = node->go->h;
-    SDL_RenderCopy(globalRenderer, node->go->texture, &windowFillRect, &gameobjectRect);
-}
-
-static void _func_old(DrawLinkListNode_t* node)
-{
-    gameobjectRect.x = node->go->x;
-    gameobjectRect.y = node->go->y;
     gameobjectRect.w = node->go->w;
     gameobjectRect.h = node->go->h;
     SDL_RenderCopy(globalRenderer, node->go->texture, &windowFillRect, &gameobjectRect);

@@ -9,8 +9,8 @@
 struct Camera
 {
     int speedX,speedY;
-    int x,y;
-    //int x,y,z;
+    //int x,y;
+    int x,y,z;
     //float zoom;//didn't realize yet.
 };
 
