@@ -1,102 +1,71 @@
 #include "gomanager.h"
 #include "gameobject.h"
+#include "linklist.h"
 #include <string.h>
 
-typedef struct GOLinkListNode {
-    GameObject_t           go;
-    struct GOLinkListNode* next;
-} GOLinkListNode_t;
-
-typedef struct {
-    GOLinkListNode_t* first;
-} GOLinkListHead;
-
-// invisible from outside
-static GOLinkListHead globalGameObjects;
-int                   idHead = 0;
+static LinkListHead_t globalGameObjects;
+int idHead = 0;
 
 void gameObjectsInit(void) { globalGameObjects.first = NULL; }
 
 void gameObjectsSpawn(GameObject_t* go)
 {
-    if(globalGameObjects.first == NULL)
-    {
-        globalGameObjects.first       = (GOLinkListNode_t*)malloc(sizeof(GOLinkListNode_t));
-        globalGameObjects.first->next = NULL;
-        // copy
-        globalGameObjects.first->go = *go;
-        go->onCreate(&globalGameObjects.first->go);
-    }
-    else
-    {
-        GOLinkListNode_t* node = globalGameObjects.first;
-        while(node->next != NULL) node = node->next;
-        node->next = (GOLinkListNode_t*)malloc(sizeof(GOLinkListNode_t));
-        node       = node->next;
-        node->next = NULL;
-        // copy
-        node->go = *go;
-        go->onCreate(&globalGameObjects.first->go);
-    }
+    linkListInsertTail(&globalGameObjects,go, sizeof(*go));
 }
 
 // didn't test yet , may cause bugs.
 void gameObjectsDestroyById(int id)
 {
-    GOLinkListNode_t* node    = globalGameObjects.first;
-    GOLinkListNode_t* preNode = NULL;
-    while(node != NULL)
+    LinkListNode_t* node = globalGameObjects.first;
+    GameObject_t* go;
+    while(node)
     {
-        if(node->go.id != id)
+        go = node->var;
+        if(go->id == id)
         {
-            preNode = node;
-            node    = node->next;
-        }
-        else
-        {
-            preNode = node;
-            node->go.onDestroy(&node->go);
-            preNode->next = node->next;
+            go->onDestroy(go);
+            node->next->forward = node->forward;
+            node->forward->next = node->next;
+            free(node->var);
             free(node);
         }
+        node = node->next;
     }
 }
 
 // didn't test yet , may cause bugs.
 void gameObjectDestroyByName(const char* name)
 {
-    GOLinkListNode_t* node    = globalGameObjects.first;
-    GOLinkListNode_t* preNode = NULL;
-    while(node != NULL)
+    LinkListNode_t* node = globalGameObjects.first;
+    GameObject_t* go;
+    while(node)
     {
-        if(strcmp(node->go.name, name))
+        go = node->var;
+        if(strcmp(go->name,name) == 0)
         {
-            preNode = node;
-            node    = node->next;
-        }
-        else
-        {
-            preNode = node;
-            node->go.onDestroy(&node->go);
-            preNode->next = node->next;
+            go->onDestroy(go);
+            node->next->forward = node->forward;
+            node->forward->next = node->next;
+            free(node->var);
             free(node);
         }
+        node = node->next;
     }
 }
 
 void gameObjectsForeach(void (*func)(GameObject_t*))
 {
-    GOLinkListNode_t* node = globalGameObjects.first;
-    while(node != NULL)
+    LinkListNode_t* node = globalGameObjects.first;
+    while(node)
     {
-        func(&node->go);
+        func(node->var);
         node = node->next;
     }
 }
 
-static GameObject_t* goFound     = NULL;
-static int           requestId   = -1;
-static const char*   requestName = NULL;
+static GameObject_t* goFound = NULL;
+static int requestId = -1;
+static const char* requestName = NULL;
 
 static void _fun1(GameObject_t* go)
 {
