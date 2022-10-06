@@ -10,7 +10,30 @@ void gameObjectsInit(void) { globalGameObjects.first = NULL; }
 
 void gameObjectsSpawn(GameObject_t* go)
 {
-    linkListInsertTail(&globalGameObjects,go, sizeof(*go));
+    if(globalGameObjects.first)
+    {
+        LinkListNode_t* node = globalGameObjects.first;
+        while(node->next) node = node->next;
+        LinkListNode_t* newNode = (LinkListNode_t*)malloc(sizeof(LinkListHead_t));
+        newNode->forward = node;
+        newNode->next = NULL;
+        newNode->var = malloc(sizeof(GameObject_t));
+        memcpy(newNode->var, go, sizeof(GameObject_t));
+        node->next = newNode;
+        GameObject_t* newGo = newNode->var;
+        newGo->onCreate(newGo);
+    }
+    else
+    {
+        LinkListNode_t* newNode = (LinkListNode_t*)malloc(sizeof(LinkListNode_t));
+        newNode->forward = NULL;
+        newNode->next = NULL;
+        newNode->var = malloc(sizeof(GameObject_t));
+        memcpy(newNode->var, go, sizeof(GameObject_t));
+        globalGameObjects.first = newNode;
+        GameObject_t* newGo = newNode->var;
+        newGo->onCreate(newGo);
+    }
 }
 
 // didn't test yet , may cause bugs.
@@ -41,7 +64,7 @@ void gameObjectDestroyByName(const char* name)
     while(node)
     {
         go = node->var;
-        if(strcmp(go->name,name) == 0)
+        if(strcmp(go->name, name) == 0)
         {
             go->onDestroy(go);
             node->next->forward = node->forward;
