@@ -11,6 +11,21 @@ typedef struct {
 static DrawLinkListHead draws;
 static int drawAmount;
 
+static DrawLinkListNode_t* drawLinkListGetAt(int index)
+{
+    DrawLinkListNode_t* node = draws.first;
+    for(int i = 0; i < index; i++)
+    {
+        if(!node)
+        {
+            fprintf(stderr, "drawsGetAt() failed: out of range\n");
+            abort();
+        }
+        node = node->next;
+    }
+    return node;
+}
+
 void drawsInit()
 {
     draws.first = NULL;
@@ -65,32 +80,17 @@ void drawsClean(void)
     drawAmount = 0;
 }
 
- DrawLinkListNode_t* drawLinkListGetAt(int index)
- {
-    DrawLinkListNode_t* node = draws.first;
-    for(int i = 0;i < index;i++)
-    {
-        if(!node)
-        {
-            fprintf(stderr,"drawsGetAt() failed: out of range\n");
-            abort();
-        }
-        node = node->next;
-    }
-    return node;
- }
-
 void drawsSort(void)
 {
-    int i,j;
-    for(i = 1;i < drawAmount;i++)
+    int i, j;
+    for(i = 1; i < drawAmount; i++)
     {
         j = i - 1;
         while((j >= 0) && (drawLinkListGetAt(i)->go->z < drawLinkListGetAt(j)->go->z))
         {
-            memcpy(drawLinkListGetAt(j + 1),drawLinkListGetAt(j),sizeof(DrawLinkListNode_t));
+            memcpy(drawLinkListGetAt(j + 1), drawLinkListGetAt(j), sizeof(DrawLinkListNode_t));
             j--;
         }
-        memcpy(drawLinkListGetAt(j + 1),drawLinkListGetAt(i),sizeof(DrawLinkListNode_t));
+        memcpy(drawLinkListGetAt(j + 1), drawLinkListGetAt(i), sizeof(DrawLinkListNode_t));
     }
 }
