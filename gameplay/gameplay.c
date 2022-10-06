@@ -15,7 +15,17 @@ SDL_Event globalEvent;
 SDL_Rect windowFillRect = { 0, 0, 640, 480 };
 bool gameShouldBeClose = false;
 
-void gameplayInit()
+struct Camera camera;
+
+static void cameraInit(void)
+{
+    camera.x = 0;
+    camera.y = 0;
+    //camera.z = 2;
+    //camera.zoom = 1.0f;
+}
+
+void gameplayInit(void)
 {
     if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
     {
@@ -29,7 +39,7 @@ void gameplayInit()
     globalTexture = SDL_CreateTexture(globalRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 640, 480);
 }
 
-void gamePlayDestory()
+void gamePlayDestory(void)
 {
     SDL_DestroyWindow(globalWindow);
     SDL_DestroyRenderer(globalRenderer);
@@ -38,7 +48,7 @@ void gamePlayDestory()
     SDL_Quit();
 }
 
-void gamePlayUpateEvents()
+void gamePlayUpateEvents(void)
 {
     if(SDL_PollEvent(&globalEvent))
     {
@@ -71,6 +81,16 @@ void gamePlayUpateEvents()
 SDL_Rect gameobjectRect;
 
 static void _func(DrawLinkListNode_t* node)
+{
+    //if(node->go->z > camera.z) return;
+    gameobjectRect.x = node->go->x - camera.x;
+    gameobjectRect.y = node->go->y - camera.y;
+    gameobjectRect.w = node->go->w;
+    gameobjectRect.h = node->go->h;
+    SDL_RenderCopy(globalRenderer, node->go->texture, &windowFillRect, &gameobjectRect);
+}
+
+static void _func_old(DrawLinkListNode_t* node)
 {
     gameobjectRect.x = node->go->x;
     gameobjectRect.y = node->go->y;

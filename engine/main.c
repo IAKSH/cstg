@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_keycode.h>
 #include <audiomanager.h>
 #include <custom_gameobjects.h>
 #include <drawsort.h>
@@ -46,9 +47,19 @@ int main(int argc, char** argv)
     return 0;
 }
 
+static void moveCamera(void)
+{
+    camera.x += camera.speedX;
+    camera.y += camera.speedY;
+}
+
 static void _computing(GameObject_t* go) { go->onTick(go); }
 
-static void computing() { gameObjectsForeach(_computing); }
+static void computing()
+{
+    moveCamera();
+    gameObjectsForeach(_computing); 
+}
 
 // processing command and engine's events.
 static void engineHook(GamePlayMsg* msg)
@@ -57,7 +68,18 @@ static void engineHook(GamePlayMsg* msg)
     {
     case KEYBOARD_DOWN: {
         if(msg->content.keyboardDown.keycode == SDLK_ESCAPE) gameShouldBeClose = true;
+        else if(msg->content.keyboardDown.keycode == SDLK_LEFT) camera.speedX = -1;
+        else if(msg->content.keyboardDown.keycode == SDLK_RIGHT) camera.speedX = 1;
+        else if(msg->content.keyboardDown.keycode == SDLK_UP) camera.speedY = -1;
+        else if(msg->content.keyboardDown.keycode == SDLK_DOWN) camera.speedY = 1;
         break;
+    }
+
+    case KEYBOARD_UP: {
+        if(msg->content.keyboardUp.keycode == SDLK_LEFT) camera.speedX = 0;
+        else if(msg->content.keyboardUp.keycode == SDLK_RIGHT) camera.speedX = 0;
+        else if(msg->content.keyboardUp.keycode == SDLK_UP) camera.speedY = 0;
+        else if(msg->content.keyboardUp.keycode == SDLK_DOWN) camera.speedY = 0;
     }
 
     case COMMAND: {
