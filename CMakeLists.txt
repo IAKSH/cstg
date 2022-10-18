@@ -22,6 +22,8 @@ target_sources(gameplay PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/gameplay/audiomanager.h
     ${CMAKE_CURRENT_LIST_DIR}/gameplay/textdisplay.c
     ${CMAKE_CURRENT_LIST_DIR}/gameplay/textdisplay.h
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/animation.c
+    ${CMAKE_CURRENT_LIST_DIR}/gameplay/animation.h
     ) 
 
 target_include_directories(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools)
