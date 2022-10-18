@@ -12,9 +12,9 @@
 #include <textdisplay.h>
 #include <utools.h>
 
-static void drawEachGameObject();
+static void drawEachGameObject(void);
 static void engineHook(GamePlayMsg* msg);
-static void computing();
+static void computing(void);
 
 int main(int argc, char** argv)
 {
@@ -93,7 +93,7 @@ static void engineHook(GamePlayMsg* msg)
 
 static void _func(GameObject_t* go) { gamePlayDrawGameObjects(go); }
 
-static void drawEachGameObject()
+static void drawEachGameObject(void)
 {
     // testing
     gameObjectsForeach(_func);
