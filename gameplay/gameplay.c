@@ -2,6 +2,7 @@
 #include "gameplay.h"
 #include "drawsort.h"
 #include "message.h"
+#include "textdisplay.h"
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
@@ -22,7 +23,7 @@ static void cameraInit(void)
     camera.x = 0;
     camera.y = 0;
     camera.z = 50;
-    //camera.zoom = 1.0f;
+    // camera.zoom = 1.0f;
 }
 
 void gameplayInit(void)
@@ -81,18 +82,35 @@ void gamePlayUpateEvents(void)
 // draw every single texture
 SDL_Rect gameobjectRect;
 
-static void _func(DrawLinkListNode_t* node)
+static void drawSingleGameObject(DrawLinkListNode_t* node)
 {
     // camera will stay on the left up corner of the window
-    if(node->go->z > camera.z)
-    {
-        return;
-    }
+    if(node->go->z > camera.z) return;
     gameobjectRect.x = node->go->x - camera.x;
     gameobjectRect.y = node->go->y - camera.y;
     gameobjectRect.w = node->go->w;
     gameobjectRect.h = node->go->h;
     SDL_RenderCopy(globalRenderer, node->go->texture, &windowFillRect, &gameobjectRect);
+}
+
+static void drawSingleUITextObject(TextObject_t* text)
+{
+    if(text->z > camera.z) return;
+    gameobjectRect.x = text->x;
+    gameobjectRect.y = text->y;
+    gameobjectRect.w = text->w;
+    gameobjectRect.h = text->h;
+    SDL_RenderCopy(globalRenderer, text->texture, &windowFillRect, &gameobjectRect);
+}
+
+static void drawSingleMovingTextObject(TextObject_t* text)
+{
+    if(text->z > camera.z) return;
+    gameobjectRect.x = text->x - camera.x;
+    gameobjectRect.y = text->y - camera.y;
+    gameobjectRect.w = text->w;
+    gameobjectRect.h = text->h;
+    SDL_RenderCopy(globalRenderer, text->texture, &windowFillRect, &gameobjectRect);
 }
 
 void gamePlayDrawGameObjects(GameObject_t* go) { drawsAdd(go); }
@@ -102,10 +120,13 @@ void gamePlayDrawGameObjects(GameObject_t* go) { drawsAdd(go); }
 void gameplayFlash(void)
 {
     drawsSort();
-    drawsForeach(_func);
+    drawsForeach(drawSingleGameObject);
+    uiTextsForeach(drawSingleUITextObject);
+    movingTextsForeach(drawSingleMovingTextObject);
     SDL_RenderPresent(globalRenderer);
     SDL_RenderClear(globalRenderer);
     drawsClean();
+    textsClean();
 }
 
 void gamePlayDrawFx(SDL_Surface* surface) {}

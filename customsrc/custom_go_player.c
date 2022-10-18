@@ -3,6 +3,7 @@
 #include "gameobject.h"
 #include "gomanager.h"
 #include "message.h"
+#include "textdisplay.h"
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_log.h>
 #include <SDL2/SDL_timer.h>
@@ -24,20 +25,20 @@ GameObject_t player;
 
 void player_init()
 {
-    player.typeId    = 1;
-    player.x         = 0;
-    player.y         = 0;
-    player.z         = 0;
-    player.w         = 50;
-    player.h         = 50;
-    player.speedX    = 0;
-    player.speedY    = 0;
-    player.hp        = 1;
-    player.mp        = 100;
-    player.state     = 1;
-    player.name      = "player";
-    player.onCreate  = onCreate;
-    player.onTick    = onTick;
+    player.typeId = 1;
+    player.x = 0;
+    player.y = 0;
+    player.z = 0;
+    player.w = 50;
+    player.h = 50;
+    player.speedX = 0;
+    player.speedY = 0;
+    player.hp = 1;
+    player.mp = 100;
+    player.state = 1;
+    player.name = "player";
+    player.onCreate = onCreate;
+    player.onTick = onTick;
     player.onDestroy = onDestroy;
 
     // preload images
@@ -90,6 +91,10 @@ static void onTick(GameObject_t* self)
     // DEBUG
     // printf("x:%d\ty:%d\n",self->x,self->y);
     // fflush(stdout);
+
+    // DEBUG: Draw text
+    drawUIText("Hello world!", 100, 100, 0, 400, 25, 0, 255, 0, 255);
+    drawMovingText("I have made a game using ISO C!", 500, 500, 0, 800, 25, 128, 0, 128, 128);
 }
 
 static void onDestroy(GameObject_t* self) { SDL_Log("player killed!"); }
@@ -127,10 +132,15 @@ static void hook_testSound(GamePlayMsg* msg)
 {
     if(msg->type == KEYBOARD_DOWN)
     {
-        if(msg->content.keyboardDown.keycode == SDLK_z) playAudio(-1, "sound_01", 0);
-        else if(msg->content.keyboardDown.keycode == SDLK_x) stopAudio(-1);
-        else if(msg->content.keyboardDown.keycode == SDLK_c) resumeAudio(-1);
-        else if(msg->content.keyboardDown.keycode == SDLK_v) setChannelVolume(-1, 50);
-        else if(msg->content.keyboardDown.keycode == SDLK_b) setChannelVolume(-1, 100);
+        if(msg->content.keyboardDown.keycode == SDLK_z)
+            playAudio(-1, "sound_01", 0);
+        else if(msg->content.keyboardDown.keycode == SDLK_x)
+            stopAudio(-1);
+        else if(msg->content.keyboardDown.keycode == SDLK_c)
+            resumeAudio(-1);
+        else if(msg->content.keyboardDown.keycode == SDLK_v)
+            setChannelVolume(-1, 50);
+        else if(msg->content.keyboardDown.keycode == SDLK_b)
+            setChannelVolume(-1, 100);
     }
 }
