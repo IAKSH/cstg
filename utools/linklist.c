@@ -167,3 +167,14 @@ void linkListClean(LinkListHead_t* head)
         head->first = NULL;
     }
 }
+
+void linkListForeach(LinkListHead_t* head,void(*func)(void*))
+{
+    LinkListNode_t* node;
+    node = head->first;
+    while(node != NULL)
+    {
+        func(node->var);
+        node = node->next;
+    }
+}
