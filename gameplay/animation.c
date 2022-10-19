@@ -33,39 +33,33 @@ void animatorLoadAnimation(Animator_t* animator, char* name)
     animator->currentAnimation = buffer;
 }
 
-// this func bad bad
-DrawMeta_t getDrawMeta_old(Animator_t* animator)
-{
-    if(!animator->currentAnimation)
-    {
-        // maybe here should just put a "error image", instead of directly abort()
-        // just like source engine humm?
-        fprintf(stderr, "[ERROR] trying to draw a animator without animation\n");
-        abort();
-    }
-    if(animator->currentAnimation->remainIntervalTick-- > 0) return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, animator->frame);
-    animator->currentAnimation->remainIntervalTick = animator->currentAnimation->intervalTick;
-    if(animator->frame < linkListLength(&animator->currentAnimation->metas)) return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, animator->frame++);
-    if(animator->currentAnimation->loop)
-    {
-        animator->frame = 0;
-        return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, animator->frame++);
-    }
-    return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, linkListLength(&animator->currentAnimation->metas) - 1);
-}
-
 DrawMeta_t getDrawMeta(Animator_t* animator)
 {
-    DrawMeta_t* buffer = (DrawMeta_t*)linkListGet(&animator->currentAnimation->metas,animator->frame);
-    animator->frame++;
-    return *buffer;
+    if(animator->frame < linkListLength(&animator->currentAnimation->metas))
+    {
+        DrawMeta_t* buffer = (DrawMeta_t*)linkListGet(&animator->currentAnimation->metas,animator->frame);
+        animator->frame++;
+        return *buffer;
+    }
+    else
+    {
+        if(animator->currentAnimation->loop)
+        {
+            animator->frame = 0;
+            return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas,0);
+        }
+        else
+        {
+            return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas,linkListLength(&animator->currentAnimation->metas - 1));
+        }
+    }
 }
 
 
 void addAnimationNameMapping(Animator_t* animator, char* name, Animation_t* animation)
 {
     HashKey_t key = { name, strlen(name) * sizeof(char) };
-    hashTableAdd(&animator->animationNameMap, key, animation);
+    hashTableAdd(&animator->animationNameMap, key, animation,sizeof(Animation_t));
 }
 
 void createAnimation(char* name, int intervalTick, bool loop)

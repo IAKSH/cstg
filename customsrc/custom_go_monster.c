@@ -31,7 +31,7 @@ void monster_init()
     monster.onTick = onTick;
     monster.onDestroy = onDestroy;
     initializeAnimator(&monster.animator);
-    addAnimationNameMapping(&player.animator,"stand",getAnimation("animation_monster_stand"));
+    addAnimationNameMapping(&monster.animator,"stand",getAnimation("animation_monster_stand"));
     animatorLoadAnimation(&monster.animator,"stand");
 }
 

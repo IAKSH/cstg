@@ -14,7 +14,7 @@ void initializeHashTable(HashTable_t* hashTable, int maxLength, int singleObject
     hashTable->list = calloc(maxLength, singleObjectSize);
     if(!hashTable->list)
     {
-        fprintf(stderr,"[ERROR] can't allocate memory for HashTable_t\n");
+        fprintf(stderr, "[ERROR] can't allocate memory for HashTable_t\n");
         abort();
     }
     memset(hashTable->list, 0, maxLength * singleObjectSize);
@@ -40,7 +40,13 @@ void hashTableRemove(HashTable_t* hashTable, HashKey_t key)
     free(buffer);
 }
 
-void hashTableAdd(HashTable_t* hashTable, HashKey_t key, void* val) { hashTable->list[hash(key.begin, key.size)].val = val; }
+// will copy the val
+void hashTableAdd(HashTable_t* hashTable, HashKey_t key, void* val, int size)
+{
+    void* buffer = malloc(size);
+    memcpy(buffer, val, size);
+    hashTable->list[hash(key.begin, key.size)].val = buffer;
+}
 
 void* hashTableGetValue(HashTable_t* hashTable, HashKey_t key) { return hashTable->list[hash(key.begin, key.size)].val; }
 
