@@ -1,14 +1,16 @@
 #include "animation.h"
 #include "hashtable.h"
 #include "linklist.h"
+#include <SDL2/SDL_keyboard.h>
 #include <string.h>
+#include <time.h>
 
 LinkListHead_t globalAnimations;
 
-static void initializeAnimation(Animation_t* animation, char* name, int intervalTick, bool loop)
+static void initializeAnimation(Animation_t* animation, char* name, int intervalMs, bool loop)
 {
-    animation->intervalTick = intervalTick;
-    animation->remainIntervalTick = intervalTick;
+    animation->intervalMs = intervalMs;
+    animation->lastDraw = 0.0f;
     animation->loop = loop;
     strcpy(animation->name, name);
     linkListInitialize(&animation->metas);
@@ -27,7 +29,7 @@ void animatorLoadAnimation(Animator_t* animator, char* name)
     void* buffer = hashTableGetValue(&animator->animationNameMap, key);
     if(!buffer)
     {
-        fprintf(stderr,"[ERROR] animatorLoadAnimation(): unable to get %s in animationNameMap\n",name);
+        fprintf(stderr, "[ERROR] animatorLoadAnimation(): unable to get %s in animationNameMap\n", name);
         abort();
     }
     animator->currentAnimation = buffer;
@@ -35,31 +37,37 @@ void animatorLoadAnimation(Animator_t* animator, char* name)
 
 DrawMeta_t getDrawMeta(Animator_t* animator)
 {
-    if(animator->frame < linkListLength(&animator->currentAnimation->metas))
+    float nowTime = clock();
+    if(((nowTime - animator->currentAnimation->lastDraw) / CLOCKS_PER_SEC) * 1000 >= animator->currentAnimation->intervalMs)
     {
-        DrawMeta_t* buffer = (DrawMeta_t*)linkListGet(&animator->currentAnimation->metas,animator->frame);
-        animator->frame++;
-        return *buffer;
-    }
-    else
-    {
-        if(animator->currentAnimation->loop)
+        animator->currentAnimation->lastDraw = nowTime;
+        if(animator->frame < linkListLength(&animator->currentAnimation->metas))
         {
-            animator->frame = 0;
-            return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas,0);
+            DrawMeta_t* buffer = (DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, animator->frame);
+            animator->frame++;
+            return *buffer;
         }
         else
         {
-            return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas,linkListLength(&animator->currentAnimation->metas - 1));
+            if(animator->currentAnimation->loop)
+            {
+                animator->frame = 0;
+                return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, 0);
+            }
+            else { return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, linkListLength(&animator->currentAnimation->metas - 1)); }
         }
     }
+    else
+    {
+        if(animator->frame < linkListLength(&animator->currentAnimation->metas)) return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, animator->frame);
+        else return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, 0);
+    }
 }
-
 
 void addAnimationNameMapping(Animator_t* animator, char* name, Animation_t* animation)
 {
     HashKey_t key = { name, strlen(name) * sizeof(char) };
-    hashTableAdd(&animator->animationNameMap, key, animation,sizeof(Animation_t));
+    hashTableAdd(&animator->animationNameMap, key, animation, sizeof(Animation_t));
 }
 
 void createAnimation(char* name, int intervalTick, bool loop)
@@ -69,10 +77,7 @@ void createAnimation(char* name, int intervalTick, bool loop)
     linkListInsertTail(&globalAnimations, &animation, sizeof(animation));
 }
 
-void animationAddFrame(Animation_t* animation, DrawMeta_t drawMeta)
-{
-    linkListInsertTail(&animation->metas,&drawMeta,sizeof(DrawMeta_t));
-}
+void animationAddFrame(Animation_t* animation, DrawMeta_t drawMeta) { linkListInsertTail(&animation->metas, &drawMeta, sizeof(DrawMeta_t)); }
 
 static char* _name = NULL;
 static Animation_t* _animation = NULL;

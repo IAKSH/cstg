@@ -24,7 +24,7 @@ extern void initializeCustomAnimation(void)
 {
     
     // load all your animation here
-    createAnimation("animation_player_stand", 10, true);
+    createAnimation("animation_player_stand", 100, true);
     addFrame("animation_player_stand","unknow.png");
     addFrame("animation_player_stand","a.png");
 

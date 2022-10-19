@@ -9,8 +9,8 @@ typedef struct {
 } DrawMeta_t;
 
 typedef struct {
-    int intervalTick;
-    int remainIntervalTick;
+    float intervalMs;
+    float lastDraw;
     bool loop;
     char name[128];
     LinkListHead_t metas;
