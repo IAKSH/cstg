@@ -51,6 +51,10 @@ target_sources(utools PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/utools/linklist.c
     ${CMAKE_CURRENT_LIST_DIR}/utools/linklist.h
     ${CMAKE_CURRENT_LIST_DIR}/utools/function.h
+    ${CMAKE_CURRENT_LIST_DIR}/utools/hashtable.c
+    ${CMAKE_CURRENT_LIST_DIR}/utools/hashtable.h
+    ${CMAKE_CURRENT_LIST_DIR}/utools/hashfunc.c
+    ${CMAKE_CURRENT_LIST_DIR}/utools/hashfunc.h
     )
 
 add_executable(cstg ${CMAKE_CURRENT_LIST_DIR}/engine/main.c)
