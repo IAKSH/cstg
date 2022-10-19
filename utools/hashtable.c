@@ -1,6 +1,7 @@
 #include "hashtable.h"
 #include "hashfunc.h"
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -11,6 +12,11 @@ void initializeHashTable(HashTable_t* hashTable, int maxLength, int singleObject
     hashTable->maxLength = maxLength;
     hashTable->singleObjectSize = maxLength;
     hashTable->list = calloc(maxLength, singleObjectSize);
+    if(!hashTable->list)
+    {
+        fprintf(stderr,"[ERROR] can't allocate memory for HashTable_t\n");
+        abort();
+    }
     memset(hashTable->list, 0, maxLength * singleObjectSize);
 }
 

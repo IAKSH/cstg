@@ -1,5 +1,6 @@
 #include "custom_go_monster.h"
-#include "custom_gameobjects.h"
+#include "animation.h"
+#include "custom_gameobject_loadder.h"
 #include "gameobject.h"
 #include "gameplay.h"
 #include "gomanager.h"
@@ -14,24 +15,24 @@ GameObject_t monster;
 
 void monster_init()
 {
-    monster.typeId    = 2;
-    monster.x         = 200;
-    monster.y         = 300;
-    monster.z         = 1;
-    monster.h         = 50;
-    monster.w         = 50;
-    monster.speedX    = 0;
-    monster.speedY    = 0;
-    monster.hp        = 50;
-    monster.mp        = 10;
-    monster.state     = 1;
-    monster.name      = "monster";
-    monster.onCreate  = onCreate;
-    monster.onTick    = onTick;
+    monster.typeId = 2;
+    monster.x = 200;
+    monster.y = 300;
+    monster.z = 1;
+    monster.h = 50;
+    monster.w = 50;
+    monster.speedX = 0;
+    monster.speedY = 0;
+    monster.hp = 50;
+    monster.mp = 10;
+    monster.state = 1;
+    monster.name = "monster";
+    monster.onCreate = onCreate;
+    monster.onTick = onTick;
     monster.onDestroy = onDestroy;
-    SDL_Surface* sur  = custom_loadImage("a.png");
-    monster.texture   = SDL_CreateTextureFromSurface(globalRenderer, sur);
-    SDL_FreeSurface(sur);
+    initializeAnimator(&monster.animator);
+    addAnimationNameMapping(&player.animator,"stand",getAnimation("animation_monster_stand"));
+    animatorLoadAnimation(&monster.animator,"stand");
 }
 
 static void onCreate(GameObject_t* go)

@@ -1,7 +1,9 @@
+#include "custom_audio_loadder.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_keycode.h>
 #include <audiomanager.h>
-#include <custom_gameobjects.h>
+#include <custom_gameobject_loadder.h>
+#include <custom_animation_loadder.h>
 #include <drawsort.h>
 #include <gameobject.h>
 #include <gameplay.h>
@@ -25,7 +27,9 @@ int main(int argc, char** argv)
     msgsInit();
     hooksInit();
     hooksAdd(engineHook);
-    custom_gameObjectsInit();
+    initializeCustomAnimation();
+    initializeCustomAudio();
+    initializeCustomGameObject();
     drawsInit();
 
     // test

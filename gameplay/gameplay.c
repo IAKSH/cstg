@@ -1,5 +1,6 @@
 
 #include "gameplay.h"
+#include "animation.h"
 #include "drawsort.h"
 #include "message.h"
 #include "textdisplay.h"
@@ -90,7 +91,7 @@ static void drawSingleGameObject(DrawLinkListNode_t* node)
     gameobjectRect.y = node->go->y - camera.y;
     gameobjectRect.w = node->go->w;
     gameobjectRect.h = node->go->h;
-    SDL_RenderCopy(globalRenderer, node->go->texture, &windowFillRect, &gameobjectRect);
+    SDL_RenderCopy(globalRenderer, getDrawMeta(&node->go->animator).texture, &windowFillRect, &gameobjectRect);
 }
 
 static void drawSingleUITextObject(TextObject_t* text)

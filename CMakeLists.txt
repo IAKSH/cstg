@@ -35,8 +35,12 @@ target_sources(customsrc PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_player.h
     ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_monster.c
     ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_monster.h
-    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobjects.c
-    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobjects.h
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobject_loadder.c
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_gameobject_loadder.h
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_audio_loadder.c
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_audio_loadder.h
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_animation_loadder.c
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_animation_loadder.h
     )
 
 target_include_directories(customsrc PUBLIC

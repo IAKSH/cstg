@@ -1,5 +1,6 @@
 #include "custom_go_player.h"
-#include "custom_gameobjects.h"
+#include "animation.h"
+#include "custom_gameobject_loadder.h"
 #include "gameobject.h"
 #include "gomanager.h"
 #include "message.h"
@@ -40,17 +41,9 @@ void player_init()
     player.onCreate = onCreate;
     player.onTick = onTick;
     player.onDestroy = onDestroy;
-
-    // preload images
-    // TODO:...
-    SDL_Surface* sur = custom_loadImage("unknow.png");  // temp code
-
-    // add preloaded images to this game object
-    player.texture = SDL_CreateTextureFromSurface(globalRenderer, sur);
-    SDL_FreeSurface(sur);
-
-    // preload music
-    custom_loadAudio("sound_01", "th08_01.mp3");
+    initializeAnimator(&player.animator);
+    addAnimationNameMapping(&player.animator,"stand",getAnimation("animation_player_stand"));
+    animatorLoadAnimation(&player.animator,"stand");
 
     // add hook , if you have
     hooksAdd(hook_movement);
@@ -87,10 +80,6 @@ static void onTick(GameObject_t* self)
         puts("You dead.");
         gameShouldBeClose = true;
     }
-
-    // DEBUG
-    // printf("x:%d\ty:%d\n",self->x,self->y);
-    // fflush(stdout);
 
     // DEBUG: Draw text
     drawUIText("Hello world!", 100, 100, 0, 400, 25, 0, 255, 0, 255);
