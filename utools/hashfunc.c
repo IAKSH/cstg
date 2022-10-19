@@ -8,7 +8,8 @@ uint32_t fnv1a_32(char* data)
     static const uint32_t FNV_PRIME_32         = 16777619;
 
     uint32_t hash = HASH_OFFSET_BASIS_32;
-    for(int i = 0; i < strlen(data); i++)
+    int len = strlen(data);
+    for(int i = 0; i < len; i++)
     {
         hash *= FNV_PRIME_32;
         hash ^= data[i];
