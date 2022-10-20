@@ -22,7 +22,7 @@ uint32_t bkdr_32(char* data)
 {
     static uint32_t SEED = 131;
     uint32_t hash = 0;
-    for(int i = 0;i < strlen(data);i++) hash = hash * SEED + data[i];
+    while(*data) hash = hash * SEED + (*data++);
     return (hash & 0x7FFFFFFF);
 }
 
@@ -30,6 +30,6 @@ uint64_t bkdr_64(char* data)
 {
     static uint32_t SEED = 131;
     uint32_t hash = 0;
-    for(int i = 0;i < strlen(data);i++) hash = hash * SEED + data[i];
+    while(*data) hash = hash * SEED + (*data++);
     return (hash & 0x7FFFFFFFFFFFFFFFL);
 }
