@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-uint32_t hash(char* data, int maxLength) { return fnv1a_32(data) % maxLength; }
+uint32_t hash(char* data, int maxLength) { return bkdr_32(data) % maxLength; }
 
 void initializeHashTable(HashTable_t* hashTable, int maxLength, int singleObjectSize)
 {

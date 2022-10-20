@@ -2,7 +2,7 @@
 #include "hashfunc.h"
 #include <stdbool.h>
 
-#define ORDINARY_HASHTABLE_SIZE 10000
+#define ORDINARY_HASHTABLE_SIZE 1048576// 1024^2
 
 typedef struct {
     void* begin;

@@ -25,6 +25,7 @@ void initializeAnimator(Animator_t* animator)
 
 void animatorLoadAnimation(Animator_t* animator, char* name)
 {
+    animator->frame = 0;
     HashKey_t key = { (void*)name, strlen(name) * sizeof(char) };
     void* buffer = hashTableGetValue(&animator->animationNameMap, key);
     if(!buffer)
