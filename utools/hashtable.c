@@ -41,7 +41,7 @@ void hashTableRemove(HashTable_t* hashTable, HashKey_t key)
 }
 
 // will copy the val
-void hashTableAdd(HashTable_t* hashTable, HashKey_t key, void* val, int size)
+void hashTabSet(HashTable_t* hashTable, HashKey_t key, void* val, int size)
 {
     void* buffer = malloc(size);
     memcpy(buffer, val, size);

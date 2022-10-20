@@ -76,7 +76,7 @@ DrawMeta_t getDrawMeta(Animator_t* animator)
 void addAnimationNameMapping(Animator_t* animator, char* name, Animation_t* animation)
 {
     HashKey_t key = { name, strlen(name) * sizeof(char) };
-    hashTableAdd(&animator->animationNameMap, key, animation, sizeof(Animation_t));
+    hashTabSet(&animator->animationNameMap, key, animation, sizeof(Animation_t));
 }
 
 void createAnimation(char* name, int intervalTick, bool loop)
