@@ -37,6 +37,11 @@ void animatorLoadAnimation(Animator_t* animator, char* name)
 
 DrawMeta_t getDrawMeta(Animator_t* animator)
 {
+    if(!animator->currentAnimation)
+    {
+        DrawMeta_t dm = { NULL };
+        return dm;
+    }
     float nowTime = clock();
     if(((nowTime - animator->currentAnimation->lastDraw) / CLOCKS_PER_SEC) * 1000 >= animator->currentAnimation->intervalMs)
     {
