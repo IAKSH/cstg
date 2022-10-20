@@ -145,9 +145,12 @@ int linkListLength(LinkListHead_t* head)
 {
     if(!head->first) return 0;
     LinkListNode_t* node = head->first;
-    int i = 0;
+    int i = 1;
     for(; 1; i++)
-        if(!(node++)->next) break;
+    {
+        if(!node->next) break;
+        node = node->next;
+    }
     return i;
 }
 
