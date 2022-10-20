@@ -40,7 +40,7 @@ DrawMeta_t getDrawMeta(Animator_t* animator)
     float nowTime = clock();
     if(((nowTime - animator->currentAnimation->lastDraw) / CLOCKS_PER_SEC) * 1000 >= animator->currentAnimation->intervalMs)
     {
-        if(animator->frame < linkListLength(&animator->currentAnimation->metas))
+        if(animator->frame + 1 <= linkListLength(&animator->currentAnimation->metas))
         {
             animator->currentAnimation->lastDraw = nowTime;
             DrawMeta_t* buffer = (DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, animator->frame);
@@ -55,12 +55,12 @@ DrawMeta_t getDrawMeta(Animator_t* animator)
                 return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, 0);
             }
             else
-                return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, linkListLength(&animator->currentAnimation->metas) - 1);
+                return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, animator->frame - 1);
         }
     }
     else
     {
-        if(animator->frame < linkListLength(&animator->currentAnimation->metas))
+        if(animator->frame + 1 <= linkListLength(&animator->currentAnimation->metas))
             return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, animator->frame);
         else
             return *(DrawMeta_t*)linkListGet(&animator->currentAnimation->metas, 0);

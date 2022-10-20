@@ -28,6 +28,7 @@ extern void initializeCustomAnimation(void)
     addFrame("animation_player_stand", "unknow.png");
     addFrame("animation_player_stand", "a.png");
 
-    createAnimation("animation_monster_stand", 10, false);
+    createAnimation("animation_monster_stand", 500, false);
     addFrame("animation_monster_stand", "a.png");
+    addFrame("animation_monster_stand", "unknow.png");
 }
