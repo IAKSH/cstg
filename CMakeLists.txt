@@ -41,6 +41,8 @@ target_sources(customsrc PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_audio_loadder.h
     ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_animation_loadder.c
     ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_animation_loadder.h
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_tpsdisplayer.c
+    ${CMAKE_CURRENT_LIST_DIR}/customsrc/custom_go_tpsdisplayer.h
     )
 
 target_include_directories(customsrc PUBLIC
