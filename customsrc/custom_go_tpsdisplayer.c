@@ -35,6 +35,7 @@ static void onCreate(GameObject_t* go) {}
 
 static void onTick(GameObject_t* go)
 {
+    while((1.0f / ((clock() - last) / CLOCKS_PER_SEC)) > 120) {}
     float now = clock();
     char p[32];
     sprintf(p, "TPS: %g", (1.0f / ((now - last) / CLOCKS_PER_SEC)));
