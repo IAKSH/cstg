@@ -44,11 +44,11 @@ void player_init()
     player.onDestroy = onDestroy;
     initializeAnimator(&player.animator);
     addAnimationNameMapping(&player.animator, "stand_down", getAnimation("ani_player_stand_down"));
-    addAnimationNameMapping(&player.animator, "stand_up", getAnimation("ani_player_stand_up"));
+    addAnimationNameMapping(&player.animator, "stand_up_dont_collide", getAnimation("ani_player_stand_up"));
     addAnimationNameMapping(&player.animator, "stand_left", getAnimation("ani_player_stand_left"));
     addAnimationNameMapping(&player.animator, "stand_right", getAnimation("ani_player_stand_right"));
     addAnimationNameMapping(&player.animator, "walk_down", getAnimation("ani_player_walk_down"));
-    addAnimationNameMapping(&player.animator, "walk_up", getAnimation("ani_player_walk_up"));
+    addAnimationNameMapping(&player.animator, "walk_up_dont_collide", getAnimation("ani_player_walk_up"));
     addAnimationNameMapping(&player.animator, "walk_left", getAnimation("ani_player_walk_left"));
     addAnimationNameMapping(&player.animator, "walk_right", getAnimation("ani_player_walk_right"));
     animatorLoadAnimation(&player.animator, "stand_down");
@@ -104,7 +104,7 @@ static void hook_movement(GamePlayMsg* msg)
         // okay... I remenber OpenGL doesn't use it too.
         if(msg->content.keyboardDown.keycode == SDLK_w)
         {
-            if(go->speedY != -1) animatorLoadAnimation(&go->animator, "walk_up");
+            if(go->speedY != -1) animatorLoadAnimation(&go->animator, "walk_up_dont_collide");
             go->speedY = -1;
         }
         else if(msg->content.keyboardDown.keycode == SDLK_s)
@@ -128,7 +128,7 @@ static void hook_movement(GamePlayMsg* msg)
         if(msg->content.keyboardDown.keycode == SDLK_w)
         {
             go->speedY = 0;
-            animatorLoadAnimation(&go->animator, "stand_up");
+            animatorLoadAnimation(&go->animator, "stand_up_dont_collide");
         }
         else if(msg->content.keyboardDown.keycode == SDLK_s)
         {
