@@ -1,22 +1,18 @@
 #include "message.h"
 #include <linklist.h>
 #include <stdlib.h>
+#include <string.h>
 
 // invisibel from outside
-static LinkListHead_t globalMsgs;
+static GamePlayMsg globalMsg;
 
-void msgsInit(void) { linkListInitialize(&globalMsgs); };
+void msgsInit(void) { };
 
-void msgsAdd(GamePlayMsg* msg) { linkListInsertTail(&globalMsgs, msg, sizeof(*msg)); }
+void msgsAdd(GamePlayMsg* msg) { memcpy(&globalMsg,msg, sizeof(GamePlayMsg)); }
 
 void msgsForeach(void (*func)(GamePlayMsg*))
 {
-    LinkListNode_t* node = globalMsgs.first;
-    while(node)
-    {
-        func(node->var);
-        node = node->next;
-    }
+    func(&globalMsg);
 }
 
-void msgsClean(void) { linkListClean(&globalMsgs); }
+void msgsClean(void) { }
