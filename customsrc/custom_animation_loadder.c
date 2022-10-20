@@ -58,37 +58,37 @@ extern void initializeCustomAnimation(void)
 {
 
     // load all your animation here
-    createAnimation("ani_player_stand_down", 100, false);
+    createAnimation("ani_player_stand_down", 75, false);
     addFrame("ani_player_stand_down", "minami_walk_down_0.png");
 
-    createAnimation("ani_player_stand_up", 100, false);
+    createAnimation("ani_player_stand_up", 75, false);
     addFrame("ani_player_stand_up", "minami_walk_up_0.png");
 
-    createAnimation("ani_player_stand_left", 100, false);
+    createAnimation("ani_player_stand_left", 75, false);
     addFrame("ani_player_stand_left", "minami_walk_left_0.png");
 
-    createAnimation("ani_player_stand_right", 100, false);
+    createAnimation("ani_player_stand_right", 75, false);
     addFrame("ani_player_stand_right", "minami_walk_right_0.png");
 
-    createAnimation("ani_player_walk_down", 100, true);
+    createAnimation("ani_player_walk_down", 75, true);
     addFrame("ani_player_walk_down", "minami_walk_down_0.png");
     addFrame("ani_player_walk_down", "minami_walk_down_1.png");
     addFrame("ani_player_walk_down", "minami_walk_down_2.png");
     addFrame("ani_player_walk_down", "minami_walk_down_3.png");
 
-    createAnimation("ani_player_walk_up", 100, true);
+    createAnimation("ani_player_walk_up", 75, true);
     addFrame("ani_player_walk_up", "minami_walk_up_0.png");
     addFrame("ani_player_walk_up", "minami_walk_up_1.png");
     addFrame("ani_player_walk_up", "minami_walk_up_2.png");
     addFrame("ani_player_walk_up", "minami_walk_up_3.png");
 
-    createAnimation("ani_player_walk_left", 100, true);
+    createAnimation("ani_player_walk_left", 75, true);
     addFrame("ani_player_walk_left", "minami_walk_left_0.png");
     addFrame("ani_player_walk_left", "minami_walk_left_1.png");
     addFrame("ani_player_walk_left", "minami_walk_left_2.png");
     addFrame("ani_player_walk_left", "minami_walk_left_3.png");
 
-    createAnimation("ani_player_walk_right", 100, true);
+    createAnimation("ani_player_walk_right", 75, true);
     addFrame("ani_player_walk_right", "minami_walk_right_0.png");
     addFrame("ani_player_walk_right", "minami_walk_right_1.png");
     addFrame("ani_player_walk_right", "minami_walk_right_2.png");
