@@ -36,6 +36,7 @@ int main(int argc, char** argv)
     //  create an gameobject
     gameObjectsSpawn(&player);
     gameObjectsSpawn(&monster);
+    gameObjectsSpawn(&tpsdisplayer);
 
     while(!gameShouldBeClose)
     {

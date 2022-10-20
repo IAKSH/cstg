@@ -13,6 +13,7 @@
 #include <hook.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include <utools.h>
 
 static void hook_movement(GamePlayMsg*);
@@ -82,7 +83,6 @@ static void onTick(GameObject_t* self)
     }
 
     // DEBUG: Draw text
-    drawUIText("Hello world!", 100, 100, 0, 400, 25, 0, 255, 0, 255);
     drawMovingText("I have made a game using ISO C!", 500, 500, 0, 800, 25, 128, 0, 128, 128);
 }
 

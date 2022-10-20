@@ -1,4 +1,5 @@
 #include "drawsort.h"
+#include "gameobject.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,7 +39,8 @@ void drawsAdd(GameObject_t* go)
     {
         draws.first = (DrawLinkListNode_t*)malloc(sizeof(DrawLinkListNode_t));
         draws.first->next = NULL;
-        draws.first->go = go;
+        draws.first->go = (GameObject_t*)malloc(sizeof(GameObject_t));
+        memcpy(draws.first->go, go, sizeof(GameObject_t));
     }
     else
     {
@@ -48,7 +50,8 @@ void drawsAdd(GameObject_t* go)
         _da_node->next = (DrawLinkListNode_t*)malloc(sizeof(DrawLinkListNode_t));
         _da_node = _da_node->next;
         _da_node->next = NULL;
-        _da_node->go = go;
+        _da_node->go = (GameObject_t*)malloc(sizeof(GameObject_t));
+        memcpy(_da_node->go, go, sizeof(GameObject_t));
     }
     drawAmount++;
 }
@@ -74,12 +77,14 @@ void drawsClean(void)
     {
         _dc_preNode = _dc_node;
         _dc_node = _dc_node->next;
+        free(_dc_preNode->go);
         free(_dc_preNode);
     }
     draws.first = NULL;
     drawAmount = 0;
 }
 
+// bad, because directly memcpy will destory go->next order
 void drawsSort(void)
 {
     int i, j;
@@ -88,9 +93,9 @@ void drawsSort(void)
         j = i - 1;
         while((j >= 0) && (drawLinkListGetAt(i)->go->z < drawLinkListGetAt(j)->go->z))
         {
-            memcpy(drawLinkListGetAt(j + 1), drawLinkListGetAt(j), sizeof(DrawLinkListNode_t));
+            memcpy(drawLinkListGetAt(j + 1)->go, drawLinkListGetAt(j)->go, sizeof(GameObject_t));
             j--;
         }
-        memcpy(drawLinkListGetAt(j + 1), drawLinkListGetAt(i), sizeof(DrawLinkListNode_t));
+        memcpy(drawLinkListGetAt(j + 1)->go, drawLinkListGetAt(i)->go, sizeof(GameObject_t));
     }
 }

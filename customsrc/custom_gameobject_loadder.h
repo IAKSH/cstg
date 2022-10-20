@@ -4,11 +4,12 @@
 // you need to add your own gameobjects' declaration here and then they will be loaded.
 
 #pragma once
-#include "custom_go_player.h"
+#include <gameobject.h>
 
 // Custom GameObjects Begin
 extern GameObject_t player;
 extern GameObject_t monster;
+extern GameObject_t tpsdisplayer;
 // Custom GameObjects End
 
 extern void initializeCustomGameObject(void);
