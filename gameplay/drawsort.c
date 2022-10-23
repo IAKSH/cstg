@@ -1,4 +1,5 @@
 #include "drawsort.h"
+#include "gameobject.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,6 +39,7 @@ void drawsAdd(GameObject_t* go)
     {
         draws.first = (DrawLinkListNode_t*)malloc(sizeof(DrawLinkListNode_t));
         draws.first->next = NULL;
+        draws.first->go = (GameObject_t*)malloc(sizeof(GameObject_t));
         draws.first->go = go;
     }
     else
@@ -48,6 +50,7 @@ void drawsAdd(GameObject_t* go)
         _da_node->next = (DrawLinkListNode_t*)malloc(sizeof(DrawLinkListNode_t));
         _da_node = _da_node->next;
         _da_node->next = NULL;
+        _da_node->go = (GameObject_t*)malloc(sizeof(GameObject_t));
         _da_node->go = go;
     }
     drawAmount++;
@@ -88,9 +91,9 @@ void drawsSort(void)
         j = i - 1;
         while((j >= 0) && (drawLinkListGetAt(i)->go->z < drawLinkListGetAt(j)->go->z))
         {
-            memcpy(drawLinkListGetAt(j + 1), drawLinkListGetAt(j), sizeof(DrawLinkListNode_t));
+            drawLinkListGetAt(j + 1)->go = drawLinkListGetAt(j)->go;
             j--;
         }
-        memcpy(drawLinkListGetAt(j + 1), drawLinkListGetAt(i), sizeof(DrawLinkListNode_t));
+        drawLinkListGetAt(j + 1)->go = drawLinkListGetAt(i)->go;
     }
 }

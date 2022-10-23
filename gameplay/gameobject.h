@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL2/SDL.h>
+#include "animation.h"
 
 typedef struct GameObject {
     int id;  // if id < 0 then: this is a FX object
@@ -14,6 +14,6 @@ typedef struct GameObject {
     void (*onCreate)(struct GameObject* thisGO);
     void (*onDestroy)(struct GameObject* thisGO);
     void (*onTick)(struct GameObject* thisGO);
-    SDL_Texture* texture;
+    Animator_t animator;
 
 } GameObject_t;

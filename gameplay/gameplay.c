@@ -1,5 +1,6 @@
 
 #include "gameplay.h"
+#include "animation.h"
 #include "drawsort.h"
 #include "message.h"
 #include "textdisplay.h"
@@ -7,13 +8,16 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 
+#define SCREEN_SIZE_W 1024
+#define SCREEN_SIZE_H 720
+
 SDL_Window* globalWindow;
 SDL_Renderer* globalRenderer;
 SDL_Texture* globalTexture;
 // surface can't support hardware acceleration
 // static SDL_Surface* surface;
 SDL_Event globalEvent;
-SDL_Rect windowFillRect = { 0, 0, 640, 480 };
+SDL_Rect windowFillRect = { 0, 0, SCREEN_SIZE_W, SCREEN_SIZE_H };
 bool gameShouldBeClose = false;
 
 struct Camera camera;
@@ -35,10 +39,10 @@ void gameplayInit(void)
         abort();
     }
     IMG_Init(IMG_INIT_PNG);
-    globalWindow = SDL_CreateWindow("Game Demo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
+    globalWindow = SDL_CreateWindow("Game Demo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_SIZE_W, SCREEN_SIZE_H, SDL_WINDOW_SHOWN);
     // Renderer's Hardware Acceleration enabled , together with VSync
     globalRenderer = SDL_CreateRenderer(globalWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    globalTexture = SDL_CreateTexture(globalRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 640, 480);
+    globalTexture = SDL_CreateTexture(globalRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_SIZE_W, SCREEN_SIZE_H);
 }
 
 void gamePlayDestory(void)
@@ -90,7 +94,9 @@ static void drawSingleGameObject(DrawLinkListNode_t* node)
     gameobjectRect.y = node->go->y - camera.y;
     gameobjectRect.w = node->go->w;
     gameobjectRect.h = node->go->h;
-    SDL_RenderCopy(globalRenderer, node->go->texture, &windowFillRect, &gameobjectRect);
+    SDL_Texture* texture = getDrawMeta(&node->go->animator).texture;
+    if(!texture) return;
+    SDL_RenderCopy(globalRenderer, texture, &windowFillRect, &gameobjectRect);
 }
 
 static void drawSingleUITextObject(TextObject_t* text)

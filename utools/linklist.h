@@ -18,5 +18,6 @@ extern void linkListPopTail(LinkListHead_t*);
 extern void linkListPopHead(LinkListHead_t*);
 extern void linkListRemove(LinkListHead_t*, int);
 extern void linkListClean(LinkListHead_t*);
+extern void linkListForeach(LinkListHead_t*,void(*)(void*));
 extern void* linkListGet(LinkListHead_t*, int);
 extern int linkListLength(LinkListHead_t*);

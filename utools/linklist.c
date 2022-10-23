@@ -145,9 +145,12 @@ int linkListLength(LinkListHead_t* head)
 {
     if(!head->first) return 0;
     LinkListNode_t* node = head->first;
-    int i = 0;
+    int i = 1;
     for(; 1; i++)
+    {
         if(!node->next) break;
+        node = node->next;
+    }
     return i;
 }
 
@@ -165,5 +168,16 @@ void linkListClean(LinkListHead_t* head)
         free(node->var);
         free(node);
         head->first = NULL;
+    }
+}
+
+void linkListForeach(LinkListHead_t* head,void(*func)(void*))
+{
+    LinkListNode_t* node;
+    node = head->first;
+    while(node != NULL)
+    {
+        func(node->var);
+        node = node->next;
     }
 }
