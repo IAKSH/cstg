@@ -26,7 +26,7 @@ target_sources(gameplay PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/gameplay/animation.h
     ) 
 
-target_include_directories(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/utools)
+target_include_directories(gameplay PUBLIC ${CMAKE_CURRENT_LIST_DIR}/nicore)
 
 add_library(customsrc)
 
@@ -47,30 +47,32 @@ target_sources(customsrc PUBLIC
 
 target_include_directories(customsrc PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/gameplay
-    ${CMAKE_CURRENT_LIST_DIR}/utools
+    ${CMAKE_CURRENT_LIST_DIR}/nicore
     )
 
-add_library(utools)
-target_sources(utools PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/utools/utools.c
-    ${CMAKE_CURRENT_LIST_DIR}/utools/utools.h
-    ${CMAKE_CURRENT_LIST_DIR}/utools/linklist.c
-    ${CMAKE_CURRENT_LIST_DIR}/utools/linklist.h
-    ${CMAKE_CURRENT_LIST_DIR}/utools/function.h
-    ${CMAKE_CURRENT_LIST_DIR}/utools/hashtable.c
-    ${CMAKE_CURRENT_LIST_DIR}/utools/hashtable.h
-    ${CMAKE_CURRENT_LIST_DIR}/utools/hashfunc.c
-    ${CMAKE_CURRENT_LIST_DIR}/utools/hashfunc.h
+add_library(nicore)
+target_sources(nicore PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/path.c
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/path.h
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/linklist.c
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/linklist.h
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/function.h
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/hashtable.c
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/hashtable.h
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/hashfunc.c
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/hashfunc.h
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/stack.c
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/stack.h
     )
 
 add_executable(cstg ${CMAKE_CURRENT_LIST_DIR}/engine/main.c)
 target_include_directories(cstg PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/gameplay
     ${CMAKE_CURRENT_LIST_DIR}/customsrc
-    ${CMAKE_CURRENT_LIST_DIR}/utools
+    ${CMAKE_CURRENT_LIST_DIR}/nicore
     )
 
-target_link_libraries(cstg PUBLIC gameplay customsrc utools SDL2 SDL2_image SDL2_mixer SDL2_ttf)
+target_link_libraries(cstg PUBLIC gameplay customsrc nicore SDL2 SDL2_image SDL2_mixer SDL2_ttf)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

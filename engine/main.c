@@ -12,7 +12,7 @@
 #include <message.h>
 #include <stdio.h>
 #include <textdisplay.h>
-#include <utools.h>
+#include <path.h>
 
 static void drawEachGameObject(void);
 static void engineHook(GamePlayMsg* msg);
