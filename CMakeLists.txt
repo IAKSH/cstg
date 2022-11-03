@@ -63,6 +63,8 @@ target_sources(nicore PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/nicore/hashfunc.h
     ${CMAKE_CURRENT_LIST_DIR}/nicore/stack.c
     ${CMAKE_CURRENT_LIST_DIR}/nicore/stack.h
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/array.c
+    ${CMAKE_CURRENT_LIST_DIR}/nicore/array.h
     )
 
 add_executable(cstg ${CMAKE_CURRENT_LIST_DIR}/engine/main.c)
